@@ -7,19 +7,16 @@ void lineaGraf()
   stroke(0,0,250);
 }
 
-void casella()
-{
 
-}
 
 void grafico()
 {
   background(255);
   strokeWeight(4);  // Thicker
-  line(i, 400, 1600, 400);
+  line(i, yInizio, 1600, yInizio);
   stroke(250,0,0);
-  line(i, 400-passoY*9.81, 1600, 400-passoY*9.81);
-  line(i, 400+passoY*9.81, 1600, 400+passoY*9.81);
+  line(i, yInizio-passoY*9.81, 1600, yInizio-passoY*9.81);
+  line(i, yInizio+passoY*9.81, 1600, yInizio+passoY*9.81);
   lineaGrigia();
   stroke(0);
   fill(0,255,0);
