@@ -19,7 +19,7 @@ void mousePressed()
       if (overCircle(200,750,50))    //rosso -> stop acquisizione e salva su falco.csv nella cartella acquisizioni
       {
         stato=0;
-        saveTable(table, "falco.csv");
+        saveTable(table, "falco.csv");    //il salva deve essere su un altro bottone
       }
       else
       {

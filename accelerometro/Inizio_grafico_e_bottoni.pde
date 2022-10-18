@@ -13,10 +13,10 @@ void grafico()
 {
   background(255);
   strokeWeight(4);  // Thicker
-  line(i, yInizio, 1600, yInizio);
+  line(xInizio, yInizio, 1600, yInizio);
   stroke(250,0,0);
-  line(i, yInizio-passoY*9.81, 1600, yInizio-passoY*9.81);
-  line(i, yInizio+passoY*9.81, 1600, yInizio+passoY*9.81);
+  line(xInizio, yInizio-passoY*9.81, 1600, yInizio-passoY*9.81);
+  line(xInizio, yInizio+passoY*9.81, 1600, yInizio+passoY*9.81);
   lineaGrigia();
   stroke(0);
   fill(0,255,0);

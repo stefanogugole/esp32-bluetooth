@@ -6,7 +6,7 @@ int xInizio=400;
 int i=xInizio;
 int yInizio=400;
 int passoX=5;
-int passoY=20;
+int passoY=13;
 int lastx=xInizio;
 int lasty=yInizio;
 Table table;
@@ -24,13 +24,13 @@ void setup()
   // Open whatever port is the one you're using.
   try
   {
-  String portName = Serial.list()[2]; //change the 0 to a 1 or 2 etc. to match your port
-  myPort = new Serial(this, portName, 115200);
-  isCom=1;
-  table = new Table();
-  table.addColumn("i",Table.INT);
-  table.addColumn("time",Table.FLOAT);
-  table.addColumn("ax",Table.FLOAT);
+    String portName = Serial.list()[2]; //change the 0 to a 1 or 2 etc. to match your port
+    myPort = new Serial(this, portName, 115200);
+    isCom=1;
+    table = new Table();
+    table.addColumn("i",Table.INT);
+    table.addColumn("time",Table.FLOAT);
+    table.addColumn("ax",Table.FLOAT);
   }
   catch (Exception e){
     println("manca Seriale? "+e);
@@ -106,5 +106,5 @@ void draw()
               
           }
       }
-  //line(i,0, i, float(val.substring(3,val.length()-2))); 
+
 }
