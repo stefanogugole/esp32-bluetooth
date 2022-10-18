@@ -20,9 +20,12 @@ void grafico()
   lineaGrigia();
   stroke(0);
   fill(0,255,0);
-  ellipse(100, 750, 50, 50);        //C(100,750)
+  ellipse(100, 750, 50, 50);        //bottone start
   fill(255,0,0);
-  ellipse(200, 750, 50, 50);        //C(175,750)
+  ellipse(200, 750, 50, 50);        //bottone stop
   fill(0,0,255);
-  ellipse(300, 750, 50, 50);        //C(175,750)
+  ellipse(300, 750, 50, 50);        //bottone load
+  fill (100,100,100);
+  ellipse(400,750,50,50);            //bottone save
+  text("salva",400,720);
 }

@@ -1,9 +1,13 @@
 import processing.serial.*;
+
+String nameFile="data/falco.csv";
+
 Serial myPort;  // Create object from Serial class
 String val;     // Data received from the serial port
 int stato=0;
 int xInizio=400;
 int i=xInizio;
+int iLast=xInizio;
 int yInizio=400;
 int passoX=5;
 int passoY=13;
@@ -16,15 +20,17 @@ int isCom=0; //è presente la porta seriale
 
 
 
+
 void setup()
 {
   // I know that the first port in the serial list on my mac
   // is Serial.list()[0].
   // On Windows machines, this generally opens COM1.
   // Open whatever port is the one you're using.
+
   try
   {
-    String portName = Serial.list()[2]; //change the 0 to a 1 or 2 etc. to match your port
+    String portName = Serial.list()[2]; //Prima si accende l'esp32 con sensore, poi quello al pc
     myPort = new Serial(this, portName, 115200);
     isCom=1;
     table = new Table();
@@ -59,10 +65,12 @@ void draw()
           {    
               
               i=i+passoX;
+              iLast=i;
               
               if ( i>=1550 )    //finito il grafico
               {
                 i=xInizio;
+                iLast=i;
                 grafico();  //ri-inizializzo
                 table.clearRows();
                 

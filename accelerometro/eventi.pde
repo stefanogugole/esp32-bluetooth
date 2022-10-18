@@ -10,24 +10,18 @@ boolean overCircle(int x, int y, int diameter) {
 
 void mousePressed()
 {
-    if (overCircle(100,750,50))    //verde -> parte acquisizione
+    if (overCircle(100,750,50) && isCom==1)    //verde -> parte acquisizione
     {
-      stato=1;
+        stato=1;
     }
-    else
-    {
-      if (overCircle(200,750,50))    //rosso -> stop acquisizione e salva su falco.csv nella cartella acquisizioni
-      {
+    else  if (overCircle(200,750,50))    //rosso -> stop acquisizione e salva su falco.csv nella cartella acquisizioni
+    {     
         stato=0;
-        saveTable(table, "falco.csv");    //il salva deve essere su un altro bottone
-      }
-      else
-      {
-        if (overCircle(300,750,50))
-        {
+    }
+    else if (overCircle(300,750,50))
+    {
           stato=0;
-          
-          tableLoad = loadTable("falco.csv", "header");  //servirebbe PATH automatico
+          tableLoad = loadTable(nameFile, "header");  //servirebbe PATH automatico
           grafico();
           for (TableRow row : tableLoad.rows()) 
           {
@@ -43,27 +37,17 @@ void mousePressed()
             line(lastx,lasty,i,int(yInizio-accX*passoY));
             lastx=i;                      //memorizzo scorso punto in lastx e lasty
             lasty=int(yInizio-accX*passoY);
-            lineaGrigia();
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-          }
-          
-          
-        }
-        else{
+            lineaGrigia();            
+          }   
+      }
+      else if (overCircle(400,750,50))
+      {
+        stato=0;
+        saveTable(table, nameFile);    //il salva deve essere su un altro bottone
+        
+      }
+      else if (mouseX>=xInizio)
+      {
             //fill(0,0,0);
             textSize(40);
             if (mouseY<400)          //etichetta con scritta sopra o sotto punto in base a settore sopra o sotto
@@ -79,8 +63,6 @@ void mousePressed()
             point(mouseX,mouseY);
             strokeWeight(1);
         }
-      }
-    }
-    
-    
 }
+    
+    
