@@ -8,37 +8,58 @@ boolean overCircle(int x, int y, int diameter) {
   }
 }
 
+void cercaCom()
+{
+   if(isCom==0)
+   {
+   try { 
+        String portName = Serial.list()[2]; //Prima si accende l'esp32 con sensore, poi quello al pc
+        myPort = new Serial(this, portName, 115200);
+        isCom=1;
+        
+       }
+       catch (Exception e)
+       {
+          //println("Non c'è seriale? "+e);
+          isCom=0;
+          stato=0;    
+       }
+   }
+   if (isCom==1)
+   {
+      try{
+        
+          if ( myPort.available() > 0)
+          {  // If data is available,
+              
+                  val = myPort.readStringUntil('\n');         // read it and store it in val. Va fatto sempre se c'è dato, sennò riempie il buffer!!!
+          }
+      }
+      catch (Exception e)
+      {
+        //println(" myport available "+ e);
+      }
+   }
+          
+}
+
 void mousePressed()
 {
     if (overCircle(100,750,50))    //verde -> verifica se c'è porta e in caso la collega e parte acquisizione
     {
         
-        grafico();
-        if (isCom==0)
+        
+        if (isCom==1)
           {
-            try
-            { 
-              String portName = Serial.list()[2]; //Prima si accende l'esp32 con sensore, poi quello al pc
-              myPort = new Serial(this, portName, 115200);
-              isCom=1;
-              stato=1;
-              
-             }
-             catch (Exception e)
-             {
-                println("Non c'è seriale? "+e);
-                isCom=0;
-                stato=0;
-             }
-            }
-            
-            
-            table = new Table();
+            grafico();
+            stato=1;    //premuto tasto verde
+            i=xInizio;                             //si parte dall'inizio
+            table = new Table();                  //tabella nuova ad ogni pressione
             table.addColumn("i",Table.INT);
             table.addColumn("time",Table.FLOAT);
             table.addColumn("ax",Table.FLOAT);
-            //grafico();                             //reinizia grafico
-        
+            
+          }
         
     }
     else  if (overCircle(200,750,50))    //rosso -> stop acquisizione

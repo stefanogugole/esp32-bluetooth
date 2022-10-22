@@ -12,6 +12,13 @@ void lineaGraf()
 void grafico()
 {
   background(255);
+  
+  
+  lastx=xInizio;    //si parte col contatore a zero
+  lasty=yInizio;
+  i=xInizio;
+  
+  
   strokeWeight(4);  // Thicker
   line(xInizio, yInizio, 1600, yInizio);
   stroke(250,0,0);
@@ -28,4 +35,5 @@ void grafico()
   fill (100,100,100);
   ellipse(400,750,50,50);            //bottone save
   text("salva",400,720);
+
 }
