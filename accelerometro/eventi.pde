@@ -10,15 +10,42 @@ boolean overCircle(int x, int y, int diameter) {
 
 void mousePressed()
 {
-    if (overCircle(100,750,50) && isCom==1)    //verde -> parte acquisizione
+    if (overCircle(100,750,50))    //verde -> verifica se c'è porta e in caso la collega e parte acquisizione
     {
-        stato=1;
+        
+        grafico();
+        if (isCom==0)
+          {
+            try
+            { 
+              String portName = Serial.list()[2]; //Prima si accende l'esp32 con sensore, poi quello al pc
+              myPort = new Serial(this, portName, 115200);
+              isCom=1;
+              stato=1;
+              
+             }
+             catch (Exception e)
+             {
+                println("Non c'è seriale? "+e);
+                isCom=0;
+                stato=0;
+             }
+            }
+            
+            
+            table = new Table();
+            table.addColumn("i",Table.INT);
+            table.addColumn("time",Table.FLOAT);
+            table.addColumn("ax",Table.FLOAT);
+            //grafico();                             //reinizia grafico
+        
+        
     }
-    else  if (overCircle(200,750,50))    //rosso -> stop acquisizione e salva su falco.csv nella cartella acquisizioni
+    else  if (overCircle(200,750,50))    //rosso -> stop acquisizione
     {     
         stato=0;
     }
-    else if (overCircle(300,750,50))
+    else if (overCircle(300,750,50))    //load
     {
           stato=0;
           tableLoad = loadTable(nameFile, "header");  //servirebbe PATH automatico

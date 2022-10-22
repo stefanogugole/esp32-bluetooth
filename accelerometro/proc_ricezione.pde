@@ -1,4 +1,4 @@
-import processing.serial.*;
+import processing.serial.*;                        //da gestire iLast... che succede alla table dopo stop e start?
 
 String nameFile="data/falco.csv";
 
@@ -15,7 +15,7 @@ int lastx=xInizio;
 int lasty=yInizio;
 Table table;
 Table tableLoad;
-int isCom=0; //è presente la porta seriale
+int isCom=0; //è presente la porta seriale?
 
 
 
@@ -23,30 +23,8 @@ int isCom=0; //è presente la porta seriale
 
 void setup()
 {
-  // I know that the first port in the serial list on my mac
-  // is Serial.list()[0].
-  // On Windows machines, this generally opens COM1.
-  // Open whatever port is the one you're using.
-
-  try
-  {
-    String portName = Serial.list()[2]; //Prima si accende l'esp32 con sensore, poi quello al pc
-    myPort = new Serial(this, portName, 115200);
-    isCom=1;
-    table = new Table();
-    table.addColumn("i",Table.INT);
-    table.addColumn("time",Table.FLOAT);
-    table.addColumn("ax",Table.FLOAT);
-  }
-  catch (Exception e){
-    println("manca Seriale? "+e);
-    isCom=0;
-  }
   size(1600, 800);
-  grafico();
-  
-  
-  
+  grafico();  //serve per inizializzare i pulsanti
 }
 
 
@@ -67,10 +45,10 @@ void draw()
               i=i+passoX;
               iLast=i;
               
-              if ( i>=1550 )    //finito il grafico
+              if ( i>=1550 )    //finito il grafico si reinizia
               {
                 i=xInizio;
-                iLast=i;
+                iLast=i;        //riinizializzo anche i. E la Table?
                 grafico();  //ri-inizializzo
                 table.clearRows();
                 
@@ -109,7 +87,9 @@ void draw()
                 
               }
               catch (Exception e)
-              {}
+              {
+                println("errori in draw"+e);
+              }
             }
               
           }
