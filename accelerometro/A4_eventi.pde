@@ -22,7 +22,7 @@ void cercaCom()
        {
           //println("Non c'è seriale? "+e);
           isCom=0;
-          stato=0;    
+          verde=0;    
        }
    }
    if (isCom==1)
@@ -52,7 +52,7 @@ void mousePressed()
         if (isCom==1)
           {
             grafico();
-            stato=1;    //premuto tasto verde
+            verde=1;    //premuto tasto verde
             i=xInizio;                             //si parte dall'inizio
             table = new Table();                  //tabella nuova ad ogni pressione
             table.addColumn("i",Table.INT);
@@ -64,14 +64,15 @@ void mousePressed()
     }
     else  if (overCircle(200,750,50))    //rosso -> stop acquisizione
     {     
-        stato=0;
+        verde=0;
     }
     else if (overCircle(300,750,50))    //load
     {
-          stato=0;
-          tableLoad = loadTable(nameFile, "header");  //servirebbe PATH automatico
+          verde=0;
+          table = new Table();                  //tabella nuova ad ogni pressione
+          table = loadTable(nameFile, "header");  //servirebbe PATH automatico
           grafico();
-          for (TableRow row : tableLoad.rows()) 
+          for (TableRow row : table.rows()) 
           {
             int i = row.getInt("i");
             float time = row.getFloat("time");
@@ -90,7 +91,7 @@ void mousePressed()
       }
       else if (overCircle(400,750,50))
       {
-        stato=0;
+        verde=0;
         saveTable(table, nameFile);    //il salva deve essere su un altro bottone
         
       }

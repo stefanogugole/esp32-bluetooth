@@ -4,7 +4,7 @@ String nameFile="data/falco.csv";
 
 Serial myPort;  // Create object from Serial class
 String val;     // Data received from the serial port
-int stato=0;
+int verde=0;
 int xInizio=400;
 int i=xInizio;
 
@@ -36,7 +36,7 @@ void draw()
   cercaCom();  //ad ogni giro cerco di settare la porta COM seriale, se c'è
   
   
-  if ( stato==1 && isCom==1 ) //bottone verde premuto e porta COM rilevata
+  if ( verde==1 && isCom==1 ) //bottone verde premuto e porta COM rilevata
   {    
       
       i=i+passoX;  //la i è la x sul grafico, che avanza nel tempo
@@ -44,9 +44,10 @@ void draw()
       if ( i>=1550 )    //finito il grafico si reinizia e cancello la tabella
       {
         grafico();  //ri-inizializzo 
+        table.clearRows();
       }
       
-      parseData();
+      parseAccData();
       
  
         

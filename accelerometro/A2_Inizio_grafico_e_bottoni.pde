@@ -28,12 +28,15 @@ void grafico()
   stroke(0);
   fill(0,255,0);
   ellipse(100, 750, 50, 50);        //bottone start
+  text("Campiona",100,720);
   fill(255,0,0);
   ellipse(200, 750, 50, 50);        //bottone stop
+  text("Stop camp.",200,720);
   fill(0,0,255);
   ellipse(300, 750, 50, 50);        //bottone load
+  text("Load "+nameFile,270,720);
   fill (100,100,100);
   ellipse(400,750,50,50);            //bottone save
-  text("salva",400,720);
+  text("salva "+nameFile,400,720);
 
 }
