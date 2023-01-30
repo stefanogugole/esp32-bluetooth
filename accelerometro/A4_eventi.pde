@@ -13,14 +13,16 @@ void cercaCom()
    if(isCom==0)
    {
    try { 
-        String portName = Serial.list()[2]; //Prima si accende l'esp32 con sensore, poi quello al pc
+        String portName = Serial.list()[0]; //???Cerca in dispositivi (sistema) Prima si accende l'esp32 con sensore, poi quello al pc
+        //println("portName"+portName);
         myPort = new Serial(this, portName, 115200);
         isCom=1;
         
        }
        catch (Exception e)
        {
-          //println("Non c'è seriale? "+e);
+          println("Non c'è seriale? "+e);
+          delay(500);
           isCom=0;
           verde=0;    
        }
@@ -45,6 +47,7 @@ void cercaCom()
 
 void mousePressed()
 {
+    /*
     if (overCircle(100,750,50))    //verde -> verifica se c'è porta e in caso la collega e parte acquisizione
     {
         
@@ -70,7 +73,10 @@ void mousePressed()
     {
           verde=0;
           table = new Table();                  //tabella nuova ad ogni pressione
-          table = loadTable(nameFile, "header");  //servirebbe PATH automatico
+          //table = loadTable(nameFile, "header");  //servirebbe PATH automatico
+          //cp5.get(Textfield.class,"textInput_1").getText(); 
+          url1 = cp5.get(Textfield.class,"textInput_1").getText();
+          table = loadTable("data/"+url1+".csv", "header");
           grafico();
           for (TableRow row : table.rows()) 
           {
@@ -82,20 +88,27 @@ void mousePressed()
             strokeWeight(2);  // Thicker
             stroke(0);
             line(i,yInizio, i, yInizio-accX*passoY); //istogramma
-            lineaGraf();
+            blu();
             line(lastx,lasty,i,int(yInizio-accX*passoY));
             lastx=i;                      //memorizzo scorso punto in lastx e lasty
             lasty=int(yInizio-accX*passoY);
-            lineaGrigia();            
+            grigio();        
           }   
       }
       else if (overCircle(400,750,50))
       {
         verde=0;
-        saveTable(table, nameFile);    //il salva deve essere su un altro bottone
+        //saveTable(table, nameFile);    //il salva deve essere su un altro bottone
+        url1 = cp5.get(Textfield.class,"textInput_1").getText();
+        saveTable(table,"data/"+url1+".csv");
         
       }
-      else if (mouseX>=xInizio)
+      
+      
+      
+      else if
+      */
+      if (mouseX>=xInizio)
       {
             //fill(0,0,0);
             textSize(40);

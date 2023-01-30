@@ -1,10 +1,19 @@
-void lineaGrigia()  //isto
+void grigio()  //isto
 {
   stroke(150);
 }
-void lineaGraf()
+
+void rosso()  //isto
+{
+  stroke(250,0,0);  //in rosso
+}
+void blu()
 {
   stroke(0,0,250);
+}
+void nero()
+{
+  stroke(0);
 }
 
 
@@ -16,16 +25,24 @@ void grafico()
   
   lastx=xInizio;    //si parte col contatore a zero
   lasty=yInizio;
+  lastV=0;
+  lastH=0;
+  lastT=0;
   i=xInizio;
   
   
   strokeWeight(4);  // Thicker
-  line(xInizio, yInizio, 1600, yInizio);
-  stroke(250,0,0);
-  line(xInizio, yInizio-passoY*9.81, 1600, yInizio-passoY*9.81);
-  line(xInizio, yInizio+passoY*9.81, 1600, yInizio+passoY*9.81);
-  lineaGrigia();
-  stroke(0);
+  nero();
+  line(xInizio, yInizio, 1600, yInizio);  //disegno asse x
+  
+  rosso();
+  line(xInizio, yInizio-passoY*9.81, 1600, yInizio-passoY*9.81);  //linea sopra 
+  line(xInizio, yInizio+passoY*9.81, 1600, yInizio+passoY*9.81);  //linea sotto
+  nero();
+  
+  
+  
+  /*
   fill(0,255,0);
   ellipse(100, 750, 50, 50);        //bottone start
   text("Campiona",100,720);
@@ -38,5 +55,5 @@ void grafico()
   fill (100,100,100);
   ellipse(400,750,50,50);            //bottone save
   text("salva "+nameFile,400,720);
-
+*/
 }
