@@ -12,7 +12,7 @@ String nameFile="data/falco2.csv";
 
 Serial myPort;  // Create object from Serial class
 String val;     // Data received from the serial port
-int verde=0;
+
 int xInizio=400;
 int i=xInizio;
 float accXInizio=9.81;
@@ -30,8 +30,9 @@ float lastT=0;
 float timeInizio=0;
 Table table;
 Table tableLoad;
-int isCom=0; //è presente la porta seriale?
 
+int isCom=0; //è presente la porta seriale?
+int verde=0;
 
 
 
@@ -46,7 +47,8 @@ void setup()
   Button b1 = cp5.addButton("Campiona").setPosition(210,20).setSize(100,50); 
   Button b2 = cp5.addButton("Stop").setPosition(310,20).setSize(100,50);
   Button b3 = cp5.addButton("Load").setPosition(410,20).setSize(100,50);
-  Button b4 = cp5.addButton("Salva").setPosition(510,20).setSize(100,50);
+  Button b4 = cp5.addButton("Salva").setPosition(610,20).setSize(100,50);
+  Button b5 = cp5.addButton("Load Cinematiche").setPosition(510,20).setSize(100,50);
   
   /*
   b1.addCallback(new CallbackListener() {
@@ -129,7 +131,7 @@ void setup()
   );
   
   
- 
+ background(255);
   
   /*
   ButtonBar b = cp5.addButtonBar("menu")
@@ -142,7 +144,7 @@ void setup()
   
   //url1 = cp5.get(Textfield.class,"textInput_1").getText();    dove serve
   
-  grafico();  //serve per inizializzare i pulsanti
+  //grafico();  //serve per inizializzare i pulsanti
 }
 
 
@@ -153,6 +155,9 @@ void draw()
   
   cercaCom();  //ad ogni giro cerco di settare la porta COM seriale, se c'è
   
+  
+  
+  /* le cose in tempo diretto/sincrone meglio farle qui al volo. Le cose asincrone le chiamiamo con eventi dai bottoni con i callback!! */
   
   if ( verde==1 && isCom==1 ) //bottone verde premuto e porta COM rilevata
   {    
@@ -169,7 +174,8 @@ void draw()
       
       
       
-      //parseAccData();
+      parseAccData();
+      /*
       try{
         
     
@@ -207,7 +213,7 @@ void draw()
       
       
       
-      
+      */
       
       
       

@@ -1,4 +1,4 @@
-boolean overCircle(int x, int y, int diameter) {
+/*boolean overCircle(int x, int y, int diameter) {
   float disX = x - mouseX;
   float disY = y - mouseY;
   if (sqrt(sq(disX) + sq(disY)) < diameter/2 ) {
@@ -7,13 +7,14 @@ boolean overCircle(int x, int y, int diameter) {
     return false;
   }
 }
+*/
 
-void cercaCom()
+void cercaCom()  //imposta la connessione e se c'è mette la stringa nella variabile globale val!!!!!
 {
    if(isCom==0)
    {
    try { 
-        String portName = Serial.list()[0]; //???Cerca in dispositivi (sistema) Prima si accende l'esp32 con sensore, poi quello al pc
+        String portName = Serial.list()[0]; //???Cerca in dispositivi (sistema) Prima si accendere l'esp32 con sensore, poi quello al pc
         //println("portName"+portName);
         myPort = new Serial(this, portName, 115200);
         isCom=1;
@@ -47,7 +48,26 @@ void cercaCom()
 
 void mousePressed()
 {
+    if (mouseX>=xInizio)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
+      {
+            //fill(0,0,0);
+            textSize(40);
+            if (mouseY<400)          //etichetta con scritta sopra o sotto punto in base a settore sopra o sotto
+            {
+              text("A: "+(yInizio-mouseY)/passoY,mouseX,mouseY-50);
+            }
+            else
+            {
+              text("A: "+(yInizio-mouseY)/passoY,mouseX,mouseY+50);
+            }
+            stroke(0);
+            strokeWeight(16);
+            point(mouseX,mouseY);
+            strokeWeight(1);
+        }
     /*
+    
+    
     if (overCircle(100,750,50))    //verde -> verifica se c'è porta e in caso la collega e parte acquisizione
     {
         
@@ -108,23 +128,7 @@ void mousePressed()
       
       else if
       */
-      if (mouseX>=xInizio)
-      {
-            //fill(0,0,0);
-            textSize(40);
-            if (mouseY<400)          //etichetta con scritta sopra o sotto punto in base a settore sopra o sotto
-            {
-              text("A: "+(yInizio-mouseY)/passoY,mouseX,mouseY-50);
-            }
-            else
-            {
-              text("A: "+(yInizio-mouseY)/passoY,mouseX,mouseY+50);
-            }
-            stroke(0);
-            strokeWeight(16);
-            point(mouseX,mouseY);
-            strokeWeight(1);
-        }
+      
 }
     
     
