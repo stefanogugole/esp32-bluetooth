@@ -31,16 +31,3 @@ void parseAccData()
   }
     
 }
-
-/*                                                //troppo lenta l'acquisizione
-void plotGraficoAx(int i,int yInizio, float accX)
-{
-  strokeWeight(2);  // Thicker
-  line(i,yInizio, i, yInizio-accX*passoY); //istogramma
-  lineaGraf();
-  line(lastx,lasty,i,int(yInizio-accX*passoY));
-  lastx=i;                      //memorizzo scorso punto in lastx e lasty
-  lasty=int(yInizio-accX*passoY);
-  lineaGrigia();
-}
-*/

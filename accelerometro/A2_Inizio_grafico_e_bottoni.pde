@@ -40,20 +40,35 @@ void grafico()
   line(xInizio, yInizio+passoY*9.81, 1600, yInizio+passoY*9.81);  //linea sotto
   nero();
   
+}
+
+void graficoCinematiche()
+{
+  background(255);
   
   
-  /*
-  fill(0,255,0);
-  ellipse(100, 750, 50, 50);        //bottone start
-  text("Campiona",100,720);
-  fill(255,0,0);
-  ellipse(200, 750, 50, 50);        //bottone stop
-  text("Stop camp.",200,720);
-  fill(0,0,255);
-  ellipse(300, 750, 50, 50);        //bottone load
-  text("Load "+nameFile,270,720);
-  fill (100,100,100);
-  ellipse(400,750,50,50);            //bottone save
-  text("salva "+nameFile,400,720);
-*/
+  lastx=xInizio;    //si parte col contatore a zero
+  lasty=yInizio;
+  
+  lastV=0;
+  lastH=0;
+  lastT=0;
+  
+  i=xInizio;
+  
+  
+  strokeWeight(4);  // Thicker
+  nero();
+  line(xInizio, 250, 1600, 250);  //disegno asse x
+  
+  rosso();
+  
+  line(xInizio, 250-passoYLoad*9.81, 1600, 250-passoYLoad*9.81);  //linea sopra 
+  line(xInizio, 250+passoYLoad*9.81, 1600, 250+passoYLoad*9.81);  //linea sotto
+  nero();
+  
+  line(xInizio, 500, 1600, 500);  //disegno asse v
+  
+  line(xInizio, 750, 1600, 750);
+  
 }

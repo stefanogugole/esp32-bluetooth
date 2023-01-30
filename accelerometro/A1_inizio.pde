@@ -22,12 +22,19 @@ float accX = 0;
 int yInizio=400;
 int passoX=2;
 int passoY=13;
+int passoYLoad=8;
+
 int lastx=xInizio;
 int lasty=yInizio;
+
+
 float lastV=0;
 float lastH=0;
 float lastT=0;
 float timeInizio=0;
+
+
+
 Table table;
 Table tableLoad;
 
@@ -95,36 +102,52 @@ void setup()
           //table = loadTable(nameFile, "header");  //servirebbe PATH automatico
           //cp5.get(Textfield.class,"textInput_1").getText(); 
           url1 = cp5.get(Textfield.class,"textInput_1").getText();
-          table = loadTable("data/"+url1+".csv", "header");
-          grafico();
-          for (TableRow row : table.rows()) 
+          try
           {
-            int i = row.getInt("i");
-            float time = row.getFloat("time");
-            float accX = row.getFloat("ax");
-            println(i + " tempo " + time + " a " + accX);
-            
-            strokeWeight(2);  // Thicker
-            stroke(0);
-            line(i,yInizio, i, yInizio-accX*passoY); //istogramma
-            blu();
-            line(lastx,lasty,i,int(yInizio-accX*passoY));
-            lastx=i;                      //memorizzo scorso punto in lastx e lasty
-            lasty=int(yInizio-accX*passoY);
-            grigio();        
-          }   
+              table = loadTable("data/"+url1+".csv", "header");
+              grafico();
+              for (TableRow row : table.rows()) 
+              {
+                int i = row.getInt("i");
+                float time = row.getFloat("time");
+                float accX = row.getFloat("ax");
+                println(i + " tempo " + time + " a " + accX);
+                
+                strokeWeight(2);  // Thicker
+                stroke(0);
+                line(i,yInizio, i, yInizio-accX*passoY); //istogramma
+                blu();
+                line(lastx,lasty,i,int(yInizio-accX*passoY));
+                lastx=i;                      //memorizzo scorso punto in lastx e lasty
+                lasty=int(yInizio-accX*passoY);
+                grigio();        
+              }   
+          }
+           catch (Exception e)
+             {
+             }
+             
       }
     }
   }
   );
   
-  b4.addCallback(new CallbackListener() {  //stop
+  b4.addCallback(new CallbackListener() {  //save
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
         verde=0;
         //saveTable(table, nameFile);    //il salva deve essere su un altro bottone
         url1 = cp5.get(Textfield.class,"textInput_1").getText();
         saveTable(table,"data/"+url1+".csv");
+      }
+    }
+  }
+  );
+  
+  b5.addCallback(new CallbackListener() {  //LoadCinematiche
+    public void controlEvent(CallbackEvent theEvent) {
+      if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
+        graficoCinematiche();
       }
     }
   }
@@ -154,9 +177,7 @@ void draw()
 {
   
   cercaCom();  //ad ogni giro cerco di settare la porta COM seriale, se c'è
-  
-  
-  
+
   /* le cose in tempo diretto/sincrone meglio farle qui al volo. Le cose asincrone le chiamiamo con eventi dai bottoni con i callback!! */
   
   if ( verde==1 && isCom==1 ) //bottone verde premuto e porta COM rilevata
@@ -170,57 +191,8 @@ void draw()
         table.clearRows();
       }
       
-      
-      
-      
-      
       parseAccData();
-      /*
-      try{
-        
-    
-    val = split(val , ':' )[1];
-    accX=float(splitTokens(val)[0])-accXInizio;  //(round)
-    TableRow newRow = table.addRow();
-    newRow.setInt("i",i);
-    newRow.setFloat("time", time);
-    newRow.setFloat("ax",accX);    //se premi stop salvi il file
-    println(accX);
-    //plotGraficoAx(i,yInizio,accX);
-    
-    if (abs(accX) < 10000)
-    {
-      strokeWeight(2);  // Thicker
-      line(i,yInizio, i, yInizio-accX*passoY); //istogramma
-      blu();
-      line(lastx,lasty,i,int(yInizio-accX*passoY));
-      lastx=i;                      //memorizzo scorso punto in lastx e lasty
-      lasty=int(yInizio-accX*passoY);
-      float tmp=0;
-      tmp=lastH+lastV*(0.103)+0.5*(round(accX))*0.103*0.103;  //tempi diversi!! 0.103 non va bene
-      //point(i,yInizio-tmp*20);  //da sistemare quei 103 millisecondi
-      lastV=lastV+(round(accX))*0.103;
-      point(i,yInizio-lastV*100);
-      lastH=tmp;
       
-      grigio();
-    }
-  }
-  catch (Exception e)
-  {
-    //println("errore parsing "+e);
-  }
-      
-      
-      
-      */
-      
-      
-      
-      
- 
-        
-        
    }
     
 }
