@@ -38,7 +38,7 @@ unsigned long myTime;
 
 void setup(void) {
   ESP_BT.begin("ESP32_BLE_TX"); //Name of your Bluetooth Signal
-  Serial.println("Bluetooth Device is Ready to Pair");
+  //Serial.println("Bluetooth Device is Ready to Pair");
 
   
 
@@ -50,14 +50,16 @@ void setup(void) {
 
   // Try to initialize!
   if (!mpu.begin()) {
-    Serial.println("Failed to find MPU6050 chip");
+    //Serial.println("Failed to find MPU6050 chip");
     while (1) {
-      delay(10);
+      delay(10);                  //esce solo al riavvio?
     }
   }
   //Serial.println("MPU6050 Found!");
 
-  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  mpu.setAccelerometerRange(MPU6050_RANGE_2_G); //2G
+  
+  /*
   Serial.print("Accelerometer range set to: ");
   switch (mpu.getAccelerometerRange()) {
   case MPU6050_RANGE_2_G:
@@ -73,7 +75,11 @@ void setup(void) {
     Serial.println("+-16G");
     break;
   }
+
+  */
   mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+
+  /*
   Serial.print("Gyro range set to: ");
   switch (mpu.getGyroRange()) {
   case MPU6050_RANGE_250_DEG:
@@ -90,7 +96,11 @@ void setup(void) {
     break;
   }
 
+  */
+
   mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
+
+  /*
   Serial.print("Filter bandwidth set to: ");
   switch (mpu.getFilterBandwidth()) {
   case MPU6050_BAND_260_HZ:
@@ -116,7 +126,11 @@ void setup(void) {
     break;
   }
 
+  */
+/*
   Serial.println("");
+
+*/
   delay(100);
 }
 
@@ -139,10 +153,12 @@ void loop() {
  /* Serial.println(" m/s^2");*/
 
  //Serial.print("AX:");
+ /*
  Serial.print(myTime);  //AD ogni riga stampo la coppia (millisecondi, valoreDiAx)
  Serial.print(":");
  Serial.print(a.acceleration.x);
- ESP_BT.print(myTime);
+ */
+ESP_BT.print(myTime);
 ESP_BT.print(":");
 ESP_BT.println(a.acceleration.x);
 
@@ -164,5 +180,5 @@ ESP_BT.println(a.acceleration.x);
   Serial.println(" degC");
 */
   Serial.println("");
-  delay(100);
+  delay(50);
 }

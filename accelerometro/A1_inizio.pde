@@ -1,6 +1,8 @@
 import processing.serial.*;                        //da gestire TABLE e iLast... che succede alla table dopo stop e start?
 import controlP5.*; //tipi di controlli https://github.com/sojamo/controlp5   
 
+//funzionamento accelerometro https://lastminuteengineers.com/mpu6050-accel-gyro-arduino-tutorial/
+
 //https://forum.processing.org/two/discussion/1576/controlp5-basic-example-text-input-field.html
 
 // controlp5 addcallback https://forum.processing.org/one/topic/controlp5-button-using-if-pressed-and-if-released.html
@@ -18,11 +20,12 @@ int i=xInizio;
 float accXInizio=9.81;
 float time = 0;
 float accX = 0;
+float v=0;
 
 int yInizio=400;
 int passoX=2;
 int passoY=13;
-int passoYLoad=8;
+int passoYLoad=10;
 
 int lastx=xInizio;
 int lasty=yInizio;
@@ -147,7 +150,54 @@ void setup()
   b5.addCallback(new CallbackListener() {  //LoadCinematiche
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
-        graficoCinematiche();
+        
+          verde=0;
+          table = new Table();                  //tabella nuova ad ogni pressione
+          //table = loadTable(nameFile, "header");  //servirebbe PATH automatico
+          //cp5.get(Textfield.class,"textInput_1").getText(); 
+          url1 = cp5.get(Textfield.class,"textInput_1").getText();
+          try
+          {
+              table = loadTable("data/"+url1+".csv", "header");
+              graficoCinematiche();
+              int posizione=0;
+              for (TableRow row : table.rows()) 
+              {
+                
+                int i = row.getInt("i");
+                float time = row.getFloat("time");
+                float accX = row.getFloat("ax");
+                if (abs(accX)<0.5)  //elimino rumori
+                {
+                  accX=0;
+                }
+                posizione++;
+                if (posizione==1)
+                {
+                  timeInizio=time;    //al momento non serve
+                  lastT=time;
+                }
+                println(i + " tempo " + time + " a " + accX);
+                
+                strokeWeight(2);  // Thicker
+                stroke(0);
+                v=lastV+accX*(time-lastT)/1000;
+                println("velocità "+v+" dt "+(time-lastT));
+                line(i,250, i, 250-round(accX*passoYLoad)); //istogramma
+                line(i,500,i,500 - int(v));
+                blu();
+                line(lastx,lasty,i,int(250-accX*passoYLoad));
+                line(lastx,500-lastV,i,500-int(lastV+round(accX)*(time-lastT)/1000*100));
+                lastx=i;                      //memorizzo scorso punto in lastx e lasty
+                lasty=int(250-accX*passoYLoad);
+                lastV=int(lastV+round(accX)*(time-lastT)/1000);
+                lastT=time;
+                grigio();        
+              }   
+          }
+           catch (Exception e)
+             {
+             }
       }
     }
   }

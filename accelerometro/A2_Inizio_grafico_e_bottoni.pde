@@ -48,7 +48,7 @@ void graficoCinematiche()
   
   
   lastx=xInizio;    //si parte col contatore a zero
-  lasty=yInizio;
+  lasty=250;
   
   lastV=0;
   lastH=0;

@@ -51,6 +51,8 @@ void mousePressed()
     if (mouseX>=xInizio)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
       {
             //fill(0,0,0);
+            stroke(0);
+            strokeWeight(2);
             textSize(40);
             if (mouseY<400)          //etichetta con scritta sopra o sotto punto in base a settore sopra o sotto
             {
@@ -60,7 +62,8 @@ void mousePressed()
             {
               text("A: "+(yInizio-mouseY)/passoY,mouseX,mouseY+50);
             }
-            stroke(0);
+            fill(0,0,0);
+            nero();
             strokeWeight(16);
             point(mouseX,mouseY);
             strokeWeight(1);
