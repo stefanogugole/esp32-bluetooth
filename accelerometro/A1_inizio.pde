@@ -147,7 +147,7 @@ void setup()
   }
   );
   
-  b5.addCallback(new CallbackListener() {  //LoadCinematiche
+  b5.addCallback(new CallbackListener() {  //LoadCinematiche  
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
         
@@ -167,7 +167,8 @@ void setup()
                 int i = row.getInt("i");
                 float time = row.getFloat("time");
                 float accX = row.getFloat("ax");
-                if (abs(accX)<0.5)  //elimino rumori
+                lastV=0;
+                if (abs(accX)<0.4)  //elimino rumori
                 {
                   accX=0;
                 }
@@ -184,13 +185,14 @@ void setup()
                 v=lastV+accX*(time-lastT)/1000;
                 println("velocità "+v+" dt "+(time-lastT));
                 line(i,250, i, 250-round(accX*passoYLoad)); //istogramma
-                line(i,500,i,500 - int(v));
+                line(i,500,i,500 - round(v*500));
                 blu();
                 line(lastx,lasty,i,int(250-accX*passoYLoad));
-                line(lastx,500-lastV,i,500-int(lastV+round(accX)*(time-lastT)/1000*100));
+                line(lastx,500-lastV,i,500-round(v*500));
                 lastx=i;                      //memorizzo scorso punto in lastx e lasty
                 lasty=int(250-accX*passoYLoad);
-                lastV=int(lastV+round(accX)*(time-lastT)/1000);
+                lastV=v;
+                println("velocità v"+v);
                 lastT=time;
                 grigio();        
               }   
