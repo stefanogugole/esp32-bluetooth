@@ -57,7 +57,7 @@ void setup(void) {
   }
   //Serial.println("MPU6050 Found!");
 
-  mpu.setAccelerometerRange(MPU6050_RANGE_2_G); //2G
+  mpu.setAccelerometerRange(MPU6050_RANGE_4_G); //2G
   
   /*
   Serial.print("Accelerometer range set to: ");
@@ -180,5 +180,5 @@ ESP_BT.println(a.acceleration.x);
   Serial.println(" degC");
 */
   Serial.println("");
-  delay(50);
+  delay(40);
 }
