@@ -180,5 +180,5 @@ ESP_BT.println(a.acceleration.x);
   Serial.println(" degC");
 */
   Serial.println("");
-  delay(40);
+  delay(50);  //40
 }

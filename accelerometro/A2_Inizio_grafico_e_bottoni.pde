@@ -34,6 +34,8 @@ void grafico()
   strokeWeight(4);  // Thicker
   nero();
   line(xInizio, yInizio, 1600, yInizio);  //disegno asse x
+  //textSize(40);
+  text("acc/tempo",xInizio-200,yInizio);
   
   rosso();
   line(xInizio, yInizio-passoY*9.81, 1600, yInizio-passoY*9.81);  //linea sopra 
@@ -60,15 +62,23 @@ void graficoCinematiche()
   strokeWeight(4);  // Thicker
   nero();
   line(xInizio, 250, 1600, 250);  //disegno asse x
+  //textSize(40);
+  text("acc/tempo",xInizio-200,250);
   
   rosso();
   
-  line(xInizio, 250-passoYLoad*9.81, 1600, 250-passoYLoad*9.81);  //linea sopra 
+  line(xInizio, 250-passoYLoad*9.81, 1600, 250-passoYLoad*9.81);  //linea sopra
+  
   line(xInizio, 250+passoYLoad*9.81, 1600, 250+passoYLoad*9.81);  //linea sotto
+ 
   nero();
   
   line(xInizio, 500, 1600, 500);  //disegno asse v
+   //textSize(40);
+  text("vel/tempo",xInizio-200,500);
   
-  line(xInizio, 750, 1600, 750);
+  line(xInizio, 750, 1600, 750);  //disegno asse F
+   //textSize(40);
+  text("spazio/tempo",xInizio-200,750);
   
 }

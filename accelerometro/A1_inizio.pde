@@ -21,11 +21,14 @@ float accXInizio=9.81;
 float time = 0;
 float accX = 0;
 float v=0;
+float h=0;
 
 int yInizio=400;
 int passoX=2;
 int passoY=13;
 int passoYLoad=10;
+int passoV=50;
+int passoH=100;
 
 int lastx=xInizio;
 int lasty=yInizio;
@@ -77,7 +80,7 @@ void setup()
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
         //cp5.get(Textfield.class,"textInput_1").setText("start");
         grafico();
-        verde=1;    //premuto tasto verde
+        verde=1;    //premuto start
         i=xInizio;                             //si parte dall'inizio
         table = new Table();                  //tabella nuova ad ogni pressione
         table.addColumn("i",Table.INT);
@@ -160,38 +163,57 @@ void setup()
           {
               table = loadTable("data/"+url1+".csv", "header");
               graficoCinematiche();
+              
+              //contorno iniziale
               int posizione=0;
+              lastV=0;
+              int lastx=xInizio;
+              lasty=yInizio;
+              lastV=0;
+              lastH=0;
+              lastT=0;
+              timeInizio=0;
+              //fine contorno          
+              
               for (TableRow row : table.rows()) 
               {
                 
                 int i = row.getInt("i");
                 float time = row.getFloat("time");
                 float accX = row.getFloat("ax");
-                lastV=0;
-                if (abs(accX)<0.4)  //elimino rumori
+
+                if (abs(accX)<0.4)          //elimino rumori
                 {
                   accX=0;
                 }
-                posizione++;
+                posizione=posizione + 1;
                 if (posizione==1)
                 {
                   timeInizio=time;    //al momento non serve
                   lastT=time;
+                  lasty=500;
+                  v=0;
                 }
                 println(i + " tempo " + time + " a " + accX);
                 
                 strokeWeight(2);  // Thicker
                 stroke(0);
                 v=lastV+accX*(time-lastT)/1000;
+                h=lastH+lastV*(time-lastT)/1000+0.5*round(accX)*(time-lastT)/1000*(time-lastT)/1000;
                 println("velocità "+v+" dt "+(time-lastT));
                 line(i,250, i, 250-round(accX*passoYLoad)); //istogramma
-                line(i,500,i,500 - round(v*500));
+                line(i,500,i,500 - round(v*passoV));
+                line(i,750,i,750-round(h*passoH));
+                
                 blu();
-                line(lastx,lasty,i,int(250-accX*passoYLoad));
-                line(lastx,500-lastV,i,500-round(v*500));
+                line(lastx,lasty,i,int(250-round(accX)*passoYLoad));
+                line(lastx,500-round(lastV*passoV),i,500-round(v*passoV));
+                line(lastx,750-round(passoH*lastH),i,750-round(h*passoH));
+                
                 lastx=i;                      //memorizzo scorso punto in lastx e lasty
                 lasty=int(250-accX*passoYLoad);
                 lastV=v;
+                lastH=h;
                 println("velocità v"+v);
                 lastT=time;
                 grigio();        

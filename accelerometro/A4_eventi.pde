@@ -48,6 +48,8 @@ void cercaCom()  //imposta la connessione e se c'è mette la stringa nella varia
 
 void mousePressed()
 {
+  if (mouseButton == LEFT)
+     {    
     if (mouseX>=xInizio)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
       {
             //fill(0,0,0);
@@ -68,6 +70,26 @@ void mousePressed()
             point(mouseX,mouseY);
             strokeWeight(1);
         }
+     }
+      if (mouseButton == RIGHT)
+     {    
+        if (mouseX>=xInizio)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
+          {
+                //fill(0,0,0);
+                
+                strokeWeight(2);
+                rosso();
+                line(mouseX,800,mouseX,0);
+               
+               
+               
+                nero();
+                strokeWeight(16);
+           
+                strokeWeight(1);
+            }
+     }
+     
     /*
     
     
