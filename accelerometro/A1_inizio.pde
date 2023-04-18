@@ -198,15 +198,15 @@ void setup()
                 
                 strokeWeight(2);  // Thicker
                 stroke(0);
-                v=lastV+accX*(time-lastT)/1000;
+                v=lastV+round(accX)*(time-lastT)/1000;
                 h=lastH+lastV*(time-lastT)/1000+0.5*round(accX)*(time-lastT)/1000*(time-lastT)/1000;
                 println("velocità "+v+" dt "+(time-lastT));
-                line(i,250, i, 250-round(accX*passoYLoad)); //istogramma
+                line(i,250, i, int(250-accX*passoYLoad)); //istogramma
                 line(i,500,i,500 - round(v*passoV));
                 line(i,750,i,750-round(h*passoH));
                 
                 blu();
-                line(lastx,lasty,i,int(250-round(accX)*passoYLoad));
+                line(lastx,lasty,i,int(250-accX*passoYLoad));
                 line(lastx,500-round(lastV*passoV),i,500-round(v*passoV));
                 line(lastx,750-round(passoH*lastH),i,750-round(h*passoH));
                 
