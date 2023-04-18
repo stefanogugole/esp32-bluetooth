@@ -62,7 +62,7 @@ void loop() {
     text = SerialBT.readStringUntil('\n');
     text.remove(text.length()-1, 1);
     Serial.println(text);
-    \
+    
   }
-  delay(20);
+ // delay(10);
 }
