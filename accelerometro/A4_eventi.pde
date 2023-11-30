@@ -14,7 +14,7 @@ void cercaCom()  //imposta la connessione e se c'è mette la stringa nella varia
    if(isCom==0)
    {
    try { 
-        String portName = Serial.list()[0]; //???Cerca in dispositivi (sistema) Prima si accendere l'esp32 con sensore, poi quello al pc
+        String portName = Serial.list()[1]; //???Cerca in dispositivi (sistema) Prima si accendere l'esp32 con sensore, poi quello al pc
         //println("portName"+portName);
         myPort = new Serial(this, portName, 115200);
         isCom=1;

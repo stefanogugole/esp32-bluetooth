@@ -1,3 +1,5 @@
+
+
 #include <Adafruit_MPU6050.h>
 
 
@@ -6,6 +8,12 @@
 #include <Wire.h>
 
 #include "BluetoothSerial.h" //Header File for Serial Bluetooth, will be added by default into Arduino
+
+#define I2C_SDA 21
+
+#define I2C_SCL 22
+
+
 
 BluetoothSerial ESP_BT; //Object for Bluetooth
 
@@ -37,6 +45,7 @@ unsigned long myTime;
 
 
 void setup(void) {
+  Wire.begin(I2C_SDA, I2C_SCL); // remap I2C
   ESP_BT.begin("ESP32_BLE_TX"); //Name of your Bluetooth Signal
   //Serial.println("Bluetooth Device is Ready to Pair");
 
@@ -179,6 +188,7 @@ ESP_BT.println(a.acceleration.x);
   Serial.print(temp.temperature);
   Serial.println(" degC");
 */
+  //Serial.println(a.acceleration.x);
   Serial.println("");
-  delay(50);  //40
+  delay(15);  //20
 }
