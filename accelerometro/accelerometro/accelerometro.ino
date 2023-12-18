@@ -43,10 +43,32 @@ BluetoothSerial ESP_BT; //Object for Bluetooth
 Adafruit_MPU6050 mpu;
 unsigned long myTime;
 
+#define trigPin 12 // define TrigPin
+#define echoPin 14 // define EchoPin.
+#define MAX_DISTANCE 300 // Maximum sensor distance is rated at 400-500cm.
+//timeOut= 2*MAX_DISTANCE /100 /340 *1000000 = MAX_DISTANCE*58.8
+float timeOut = MAX_DISTANCE * 60; 
+int soundVelocity = 340; // define sound speed=340m/s
+
+float getSonar() {
+  unsigned long pingTime;
+  float distance;
+  // make trigPin output high level lasting for 10μs to triger HC_SR04
+  digitalWrite(trigPin, HIGH); 
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Wait HC-SR04 returning to the high level and measure out this waitting time
+  pingTime = pulseIn(echoPin, HIGH, timeOut); 
+  // calculate the qdistance according to the time
+  distance = (float)pingTime * soundVelocity / 2 / 10000; 
+  return distance; // return the distance value
+}
 
 void setup(void) {
+  pinMode(trigPin,OUTPUT);// set trigPin to output mode
+  pinMode(echoPin,INPUT); // set echoPin to input mode
   Wire.begin(I2C_SDA, I2C_SCL); // remap I2C
-  ESP_BT.begin("ESP32_BLE_TX"); //Name of your Bluetooth Signal
+  ESP_BT.begin("ESP32_BLE_TX_Prof"); //Name of your Bluetooth Signal
   //Serial.println("Bluetooth Device is Ready to Pair");
 
   
@@ -169,8 +191,9 @@ void loop() {
  */
 ESP_BT.print(myTime);
 ESP_BT.print(":");
-ESP_BT.println(a.acceleration.x);
-
+ESP_BT.print(a.acceleration.x);
+ESP_BT.print(":");
+ESP_BT.println(getSonar());
 
 /*
   Serial.print("Rotation X: ");
@@ -189,6 +212,6 @@ ESP_BT.println(a.acceleration.x);
   Serial.println(" degC");
 */
   //Serial.println(a.acceleration.x);
-  Serial.println("");
+  //Serial.println("");
   delay(15);  //20
 }

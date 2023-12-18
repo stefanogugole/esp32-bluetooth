@@ -1,11 +1,15 @@
 import processing.serial.*;                        //da gestire TABLE e iLast... che succede alla table dopo stop e start?
 import controlP5.*; //tipi di controlli https://github.com/sojamo/controlp5   
+import java.util.*;
+
 
 //funzionamento accelerometro https://lastminuteengineers.com/mpu6050-accel-gyro-arduino-tutorial/
 
 //https://forum.processing.org/two/discussion/1576/controlp5-basic-example-text-input-field.html
 
 // controlp5 addcallback https://forum.processing.org/one/topic/controlp5-button-using-if-pressed-and-if-released.html
+ScrollableList porteCom;
+
 ControlP5 cp5;
 String url1;
 
@@ -30,7 +34,7 @@ int passoYLoad=10;
 int passoV=50;
 int passoH=100;
 
-int lastx=xInizio;
+float lastx=xInizio;  //era int per il contatore
 int lasty=yInizio;
 
 
@@ -44,24 +48,57 @@ float timeInizio=0;
 Table table;
 Table tableLoad;
 
-int isCom=0; //è presente la porta seriale?
-int verde=0;
+int isCom=0; //è presente la porta seriale? Farei isCom=1 sei in finestra campionamento, 2 sei in Load, 3 in loadCinematiche
+int verde=0; //è stato premuto il bottone campiona
 
 
+
+
+  
 
 void setup()
 {
   size(1600, 800);
+  
+  try{
+        myPort = new Serial(this, Serial.list()[1], 115200);  //metto in bottone "Campiona"
+        isCom=1;
+        //println("trovata COM");
+        }
+        catch (Exception e)
+        {
+          //println(" non c'è porta COM: "+e);
+          isCom=0;
+         
+        }
+  
+  
+  
   cp5 = new ControlP5(this);
   cp5.addTextfield("textInput_1").setPosition(10, 20).setSize(200, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   //cp5.addBang("Submit").setPosition(240, 170).setSize(80, 40);         //non dovrebbe servire a nulla questo bottone
   
-
   Button b1 = cp5.addButton("Campiona").setPosition(210,20).setSize(100,50); 
   Button b2 = cp5.addButton("Stop").setPosition(310,20).setSize(100,50);
   Button b3 = cp5.addButton("Load").setPosition(410,20).setSize(100,50);
   Button b4 = cp5.addButton("Salva").setPosition(610,20).setSize(100,50);
   Button b5 = cp5.addButton("Load Cinematiche").setPosition(510,20).setSize(100,50);
+  //porteCom = cp5.addDropdownList("Porte Com disponibili: ",710,20,200,50); //Deprecated!!!!!!!!!
+  List body = Arrays.asList("COM0", "COM1", "Eve", "     Gilly", "Kerbin", "     Mun", "     Minmus", "Duna", "     Ike", "Dres", "Jool", "     Laythe", "     Vall", "     Tylo", "     Bop", "     Pol", "Eeloo");
+
+  porteCom = cp5.addScrollableList("PorteCom")
+        .setPosition(710, 20)
+        .setSize(200, 300)
+        .setBarHeight(30)
+        .setItemHeight(20)
+        .setBackgroundColor(#EA0037)
+        .setColorForeground(#EA0037)
+        .setColorActive(#FF4343)
+        .addItems(body)
+        .setOpen(false);
+  
+  
+  
   
   /*
   b1.addCallback(new CallbackListener() {
@@ -79,6 +116,7 @@ void setup()
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
         //cp5.get(Textfield.class,"textInput_1").setText("start");
+        
         grafico();
         verde=1;    //premuto start
         i=xInizio;                             //si parte dall'inizio
@@ -86,6 +124,7 @@ void setup()
         table.addColumn("i",Table.INT);
         table.addColumn("time",Table.FLOAT);
         table.addColumn("ax",Table.FLOAT);
+        table.addColumn("h",Table.FLOAT);
       }
     }
   }
@@ -100,7 +139,7 @@ void setup()
   }
   );
   
-  b3.addCallback(new CallbackListener() {  //Load
+  b3.addCallback(new CallbackListener() {  //Load    TOGLI "i", non serve
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
           verde=0;
@@ -112,21 +151,37 @@ void setup()
           {
               table = loadTable("data/"+url1+".csv", "header");
               grafico();
+              i=xInizio;
               for (TableRow row : table.rows()) 
               {
-                int i = row.getInt("i");
+                
+                //int i = row.getInt("i");  //non serve
                 float time = row.getFloat("time");
                 float accX = row.getFloat("ax");
-                println(i + " tempo " + time + " a " + accX);
+                //float h = row.getFloat("h");  //non serve
+                //println(i + " tempo " + time + " a " + accX);
+                
+                
+                if (i==xInizio)  //setto Dt iniziale per le "x" del grafico
+                {
+                  timeInizio=time;
+                  lastx=xInizio;
+                  lasty=yInizio;    
+                }
+                //se non è il primo loop, allora setto dopo lastx e last y
                 
                 strokeWeight(2);  // Thicker
                 stroke(0);
-                line(i,yInizio, i, yInizio-accX*passoY); //istogramma
+                //line(i,yInizio, i, yInizio-accX*passoY); //istogramma
+                int xAttuale=xInizio + int((time-timeInizio)/10);              //e se x troppo in là?
+                line(xAttuale,yInizio, xAttuale, int(yInizio-accX*passoY)); //istogramma
                 blu();
-                line(lastx,lasty,i,int(yInizio-accX*passoY));
-                lastx=i;                      //memorizzo scorso punto in lastx e lasty
+                line(lastx,lasty,xAttuale,int(yInizio-accX*passoY));
+                //lastx=i;                      //memorizzo scorso punto in lastx e lasty
+                lastx=xAttuale;
                 lasty=int(yInizio-accX*passoY);
-                grigio();        
+                grigio();   
+                i=i+passoX;
               }   
           }
            catch (Exception e)
@@ -181,6 +236,7 @@ void setup()
                 int i = row.getInt("i");
                 float time = row.getFloat("time");
                 float accX = row.getFloat("ax");
+                float h = row.getFloat("h");
 
                 if (abs(accX)<0.4)          //elimino rumori
                 {
@@ -221,6 +277,7 @@ void setup()
           }
            catch (Exception e)
              {
+               println("Errore in loadcinematiche : "+e);
              }
       }
     }
@@ -247,25 +304,38 @@ void setup()
 
 
 
-void draw()
+void draw()  //questo è un loop come in Arduino, aggiorna solo per "Campiona" in tempo diretto e tiene il buffer "vuoto"
 {
   
-  cercaCom();  //ad ogni giro cerco di settare la porta COM seriale, se c'è
+
+  try { 
+        if ( isCom==1 && myPort.available() > 0)
+          { 
+            String val2=myPort.readStringUntil('\n');
+            if (val2!=null)
+            {
+              val = val2;
+              println(val);
+          
+            }          // read it and store it in val. Va fatto sempre se c'è dato, sennò riempie il buffer!!!     
+            
+          }
+          else{
+          //println("iscom 0 o non dati available");
+          }
+      }
+      catch (Exception e)
+      {
+        println("myport not available: "+ e);
+      }
 
   /* le cose in tempo diretto/sincrone meglio farle qui al volo. Le cose asincrone le chiamiamo con eventi dai bottoni con i callback!! */
   
-  if ( verde==1 && isCom==1 ) //bottone verde premuto e porta COM rilevata
+  if ( isCom==1 && verde==1 ) //bottone verde premuto e porta COM rilevata
   {    
       
-      i=i+passoX;  //la i è la x sul grafico, che avanza nel tempo
-      
-      if ( i>=1550 )    //finito il grafico si reinizia e cancello la tabella
-      {
-        grafico();  //ri-inizializzo 
-        table.clearRows();
-      }
-      
-      parseAccData();
+      Campiona();    // -> A3 plotting
+      //println("invocato campiona()");
       
    }
     

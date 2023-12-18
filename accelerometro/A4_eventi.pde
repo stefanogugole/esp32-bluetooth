@@ -9,48 +9,11 @@
 }
 */
 
-void cercaCom()  //imposta la connessione e se c'è mette la stringa nella variabile globale val!!!!!
-{
-   if(isCom==0)
-   {
-   try { 
-        String portName = Serial.list()[1]; //???Cerca in dispositivi (sistema) Prima si accendere l'esp32 con sensore, poi quello al pc
-        //println("portName"+portName);
-        myPort = new Serial(this, portName, 115200);
-        isCom=1;
-        
-       }
-       catch (Exception e)
-       {
-          println("Non c'è seriale? "+e);
-          delay(500);
-          isCom=0;
-          verde=0;    
-       }
-   }
-   if (isCom==1)
-   {
-      try{
-        
-          if ( myPort.available() > 0)
-          {  // If data is available,
-              
-                  val = myPort.readStringUntil('\n');         // read it and store it in val. Va fatto sempre se c'è dato, sennò riempie il buffer!!!
-          }
-      }
-      catch (Exception e)
-      {
-        //println(" myport available "+ e);
-      }
-   }
-          
-}
-
 void mousePressed()
 {
   if (mouseButton == LEFT)
      {    
-    if (mouseX>=xInizio)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
+    if (mouseX>=xInizio && mouseY>=200)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
       {
             //fill(0,0,0);
             stroke(0);
