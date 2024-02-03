@@ -41,6 +41,7 @@ int lasty=yInizio;
 float lastV=0;
 float lastH=0;
 float lastT=0;
+float lastTA3=0;
 float timeInizio=0;
 
 
@@ -304,6 +305,8 @@ void setup()
 
 
 
+JSONObject json=null;
+
 void draw()  //questo è un loop come in Arduino, aggiorna solo per "Campiona" in tempo diretto e tiene il buffer "vuoto"
 {
   
@@ -314,8 +317,35 @@ void draw()  //questo è un loop come in Arduino, aggiorna solo per "Campiona" i
             String val2=myPort.readStringUntil('\n');
             if (val2!=null)
             {
+              /*
               val = val2;
               println(val);
+              */
+
+              
+              json = parseJSONObject(val2);
+              if (json == null || json.getFloat("time")==lastTA3) {
+                println("JSONObject could not be parsed or same data");
+              } else {
+                Float accX = json.getFloat("ax");
+                lastTA3=json.getFloat("time");
+                println(accX);
+              }
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
           
             }          // read it and store it in val. Va fatto sempre se c'è dato, sennò riempie il buffer!!!     
             

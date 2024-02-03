@@ -62,12 +62,22 @@ void Campiona()  //riempie in tempo reale i contenitori time, accX e h. Chiamato
       }
   
   try{
+    
+    
+   
+    
+    
+    /*
     time = float(split(val , ':' )[0]);
     //val1 = split(val , ':' )[1]; val2 = split(val , ':' )[2]; 
     accX = float(splitTokens(split(val , ':' )[1])[0])-9.81; //round()
     h = float(splitTokens(split(val , ':' )[2])[0]); //round() in CM!!!!!
     //println("a "+accX+" h "+h);
     //plotGraficoAx(i,yInizio,accX);
+    */
+    accX = json.getFloat("ax");
+    time = json.getFloat("time");
+    h=json.getFloat("h");
     
     if (abs(accX) < 1000)  //dati sporchi, ma quano mai più di 100 m/s^2 in salto
     {

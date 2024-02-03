@@ -131,7 +131,68 @@ void setup(void) {
 
   mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
 
+  
+  delay(100);
+}
+
+void loop() {
+  /* Get new sensor events with the readings */
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+  myTime = millis();
+
+  //SP_BT.print("");
+
+  ESP_BT.print("{");
+
+  ESP_BT.print("time:");
+  ESP_BT.print(myTime);
+  ESP_BT.print(",");
+
+  ESP_BT.print("ax:");
+  ESP_BT.print(a.acceleration.x);
+  ESP_BT.print(",");
+  ESP_BT.print("ay:");
+  ESP_BT.print(a.acceleration.y);
+  ESP_BT.print(",");
+  ESP_BT.print("az:");
+  ESP_BT.print(a.acceleration.z);
+  ESP_BT.print(",");
+  
   /*
+  ESP_BT.print("gx:");
+  ESP_BT.print(g.gyro.x);
+  ESP_BT.print(",");
+  ESP_BT.print("gy:");
+  ESP_BT.print(g.gyro.y);
+  ESP_BT.print(",");
+  ESP_BT.print("gz:");
+  ESP_BT.print(g.gyro.z);
+  ESP_BT.print(",");
+
+  */
+
+  ESP_BT.print("h:");
+  ESP_BT.print(getSonar());
+  //ESP_BT.print(",");
+  
+  
+
+
+
+  ESP_BT.println("}");
+
+/*
+ESP_BT.print(myTime);
+ESP_BT.print(":");
+ESP_BT.print(a.acceleration.x);
+ESP_BT.print(":");
+ESP_BT.println(getSonar());
+*/
+
+delay(15);  //20
+
+/*
   Serial.print("Filter bandwidth set to: ");
   switch (mpu.getFilterBandwidth()) {
   case MPU6050_BAND_260_HZ:
@@ -162,16 +223,7 @@ void setup(void) {
   Serial.println("");
 
 */
-  delay(100);
-}
-
-void loop() {
-  /* Get new sensor events with the readings */
-  sensors_event_t a, g, temp;
-  mpu.getEvent(&a, &g, &temp);
-  myTime = millis();
-
-  /* Print out the values
+/* Print out the values
   Serial.print("AX:");
   Serial.print(a.acceleration.x);
  /*  Serial.print(", ");
@@ -189,12 +241,6 @@ void loop() {
  Serial.print(":");
  Serial.print(a.acceleration.x);
  */
-ESP_BT.print(myTime);
-ESP_BT.print(":");
-ESP_BT.print(a.acceleration.x);
-ESP_BT.print(":");
-ESP_BT.println(getSonar());
-
 /*
   Serial.print("Rotation X: ");
   Serial.print(g.gyro.x);
@@ -213,5 +259,5 @@ ESP_BT.println(getSonar());
 */
   //Serial.println(a.acceleration.x);
   //Serial.println("");
-  delay(15);  //20
+  
 }
