@@ -9,12 +9,64 @@
 }
 */
 
+int contatoreClick=0;
+int xMouseInizio=0;
+int xMouseFine=0;
+float maxAx=0;
+float maxTime=0;
+
+void aggiungiClick()
+{
+  contatoreClick=(contatoreClick+1)%2;    //resto divisione: 0 scelto inizio, 1 scelto fine.
+}
+
+void cercaMax(int xMouseInizio, int xMouseFine)
+{
+  try
+  {
+      int i=0;
+      for (TableRow row : table.rows()) 
+      {
+        i=i+1;
+        float time=xInizio + int((row.getFloat("time")-timeInizio)/10);
+        if (time>xMouseInizio && time<xMouseFine)
+        {
+          if (row.getFloat("ax")>maxAx)
+          {
+            maxAx=row.getFloat("ax");
+            maxTime=row.getFloat("time");
+          }
+        }
+      }
+        //xAttuale=xInizio + int((time-timeInizio)/10);
+        cp5.get(Textfield.class,"textInputVariableMax").setText(""+maxAx);
+        
+        strokeWeight(16);
+        point(int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY));
+        strokeWeight(1);
+        text("Max Ax: "+maxAx,int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY)-20);
+        
+    
+      
+        i=i+passoX;
+      
+  }
+   catch (Exception e)
+             {
+               println("problemi con max e min");
+             }
+}
+
 void mousePressed()
 {
   if (mouseButton == LEFT)
      {    
     if (mouseX>=xInizio && mouseY>=200)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
       {
+           
+        
+        
+            
             //fill(0,0,0);
             stroke(0);
             strokeWeight(2);
@@ -36,9 +88,34 @@ void mousePressed()
      }
       if (mouseButton == RIGHT)
      {    
-        if (mouseX>=xInizio)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
-          {
-                //fill(0,0,0);
+          aggiungiClick();
+          if (mouseX>=xInizio)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
+            {
+                  //fill(0,0,0);
+                  
+              if(contatoreClick==1)    //ho già cliccato sopra, è diventato 1
+              {
+                xMouseInizio=mouseX;
+                        cp5.get(Textfield.class,"textInputVariableMax").setText("");
+
+                
+                //cp5.get(Textfield.class,"textInputVariableMax").setText(""+xMouseInizio);
+              }
+              else
+              {
+                if (contatoreClick==0 && mouseX>xMouseInizio) //ho già cliccato sopra, è diventato 2
+                {
+                  xMouseFine=mouseX;
+                  cercaMax(xMouseInizio, mouseX);
+                  xMouseInizio=0;
+                  xMouseFine=0;
+                  maxAx=0;    //resetto i max
+                  maxTime=0;
+                  
+                  //cp5.get(Textfield.class,"textInputVariableMax").setText(""+xMouseFine);
+                }
+               
+              }
                 
                 strokeWeight(2);
                 rosso();
@@ -47,7 +124,7 @@ void mousePressed()
                
                
                 nero();
-                strokeWeight(16);
+               
            
                 strokeWeight(1);
             }

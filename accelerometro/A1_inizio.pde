@@ -14,7 +14,7 @@ ControlP5 cp5;
 String url1;
 
 
-String nameFile="data/falco2.csv";
+//String nameFile="data/falco2.csv";
 
 Serial myPort;  // Create object from Serial class
 String val;     // Data received from the serial port
@@ -78,6 +78,13 @@ void setup()
   cp5 = new ControlP5(this);
   cp5.addTextfield("textInput_1").setPosition(10, 20).setSize(200, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   //cp5.addBang("Submit").setPosition(240, 170).setSize(80, 40);         //non dovrebbe servire a nulla questo bottone
+  cp5.addTextfield("textInputVariable1").setPosition(10, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  //cp5.addTextfield("textInputVariable2").setPosition(60, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  //cp5.addTextfield("textInputVariable3").setPosition(110, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  
+  cp5.addTextfield("textInputVariableMax").setPosition(200, 80).setSize(200, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
+  
   
   Button b1 = cp5.addButton("Campiona").setPosition(210,20).setSize(100,50); 
   Button b2 = cp5.addButton("Stop").setPosition(310,20).setSize(100,50);
@@ -85,6 +92,8 @@ void setup()
   Button b4 = cp5.addButton("Salva").setPosition(610,20).setSize(100,50);
   Button b5 = cp5.addButton("Load Cinematiche").setPosition(510,20).setSize(100,50);
   //porteCom = cp5.addDropdownList("Porte Com disponibili: ",710,20,200,50); //Deprecated!!!!!!!!!
+  
+  /*
   List body = Arrays.asList("COM0", "COM1", "Eve", "     Gilly", "Kerbin", "     Mun", "     Minmus", "Duna", "     Ike", "Dres", "Jool", "     Laythe", "     Vall", "     Tylo", "     Bop", "     Pol", "Eeloo");
 
   porteCom = cp5.addScrollableList("PorteCom")
@@ -97,7 +106,7 @@ void setup()
         .setColorActive(#FF4343)
         .addItems(body)
         .setOpen(false);
-  
+  */
   
   
   
@@ -327,7 +336,8 @@ void draw()  //questo è un loop come in Arduino, aggiorna solo per "Campiona" i
               if (json == null || json.getFloat("time")==lastTA3) {
                 println("JSONObject could not be parsed or same data");
               } else {
-                Float accX = json.getFloat("ax");
+                accX = json.getFloat("ax");
+                //accX = json.getFloat(cp5.get(Textfield.class,"textInputVariable").getText());
                 lastTA3=json.getFloat("time");
                 println(accX);
               }
