@@ -31,19 +31,21 @@ void cercaMax(int xMouseInizio, int xMouseFine)
         float time=xInizio + int((row.getFloat("time")-timeInizio)/10);
         if (time>xMouseInizio && time<xMouseFine)
         {
-          if (row.getFloat("ax")>maxAx)
+          if (row.getFloat(nomeVal())>maxAx)
           {
-            maxAx=row.getFloat("ax");
+            maxAx=row.getFloat(nomeVal());
             maxTime=row.getFloat("time");
           }
         }
       }
         //xAttuale=xInizio + int((time-timeInizio)/10);
         cp5.get(Textfield.class,"textInputVariableMax").setText(""+maxAx);
-        
+        nero();
         strokeWeight(16);
         point(int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY));
-        strokeWeight(1);
+        strokeWeight(4);
+        fill(0,0,0);
+        textSize(40);
         text("Max Ax: "+maxAx,int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY)-20);
         
     
@@ -69,7 +71,7 @@ void mousePressed()
             
             //fill(0,0,0);
             stroke(0);
-            strokeWeight(2);
+            strokeWeight(4);
             textSize(40);
             if (mouseY<400)          //etichetta con scritta sopra o sotto punto in base a settore sopra o sotto
             {
@@ -83,13 +85,13 @@ void mousePressed()
             nero();
             strokeWeight(16);
             point(mouseX,mouseY);
-            strokeWeight(1);
+            strokeWeight(4);
         }
      }
       if (mouseButton == RIGHT)
      {    
           aggiungiClick();
-          if (mouseX>=xInizio)  //and not in LOAD mode? in Load mode ci sono 2-3 grafici cinematici, bisogna cambiarlo
+          if (mouseX>=xInizio && isCom==2)  //isCom 2 è load e stop mode
             {
                   //fill(0,0,0);
                   
@@ -117,7 +119,7 @@ void mousePressed()
                
               }
                 
-                strokeWeight(2);
+                strokeWeight(4);
                 rosso();
                 line(mouseX,800,mouseX,0);
                
@@ -126,7 +128,7 @@ void mousePressed()
                 nero();
                
            
-                strokeWeight(1);
+                strokeWeight(4);
             }
      }
      
@@ -170,7 +172,7 @@ void mousePressed()
             float accX = row.getFloat("ax");
             println(i + " tempo " + time + " a " + accX);
             
-            strokeWeight(2);  // Thicker
+    strokeWeight(4)  // Thicker
             stroke(0);
             line(i,yInizio, i, yInizio-accX*passoY); //istogramma
             blu();

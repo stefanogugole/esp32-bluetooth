@@ -1,6 +1,7 @@
 void grigio()  //isto
 {
   stroke(150);
+  fill(0,0,0);
 }
 
 void rosso()  //isto
@@ -14,6 +15,7 @@ void blu()
 void nero()
 {
   stroke(0);
+  fill(0,0,0);
 }
 
 
@@ -34,7 +36,8 @@ void grafico()
   strokeWeight(4);  // Thicker
   nero();
   line(xInizio, yInizio, 1600, yInizio);  //disegno asse x
-  //textSize(40);
+  textSize(40);
+  fill(0,0,0);
   text("acc/tempo",xInizio-200,yInizio);
   
   rosso();
@@ -62,7 +65,8 @@ void graficoCinematiche()
   strokeWeight(4);  // Thicker
   nero();
   line(xInizio, 250, 1600, 250);  //disegno asse x
-  //textSize(40);
+  textSize(40);
+  fill(0,0,0);
   text("acc/tempo",xInizio-200,250);
   
   rosso();
@@ -74,11 +78,13 @@ void graficoCinematiche()
   nero();
   
   line(xInizio, 500, 1600, 500);  //disegno asse v
-   //textSize(40);
+  textSize(40);
+  fill(0,0,0);
   text("vel/tempo",xInizio-200,500);
   
   line(xInizio, 750, 1600, 750);  //disegno asse F
-   //textSize(40);
+  textSize(40);
+  fill(0,0,0);
   text("spazio/tempo",xInizio-200,750);
   
 }

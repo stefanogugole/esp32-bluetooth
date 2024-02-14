@@ -1,4 +1,4 @@
-import processing.serial.*;                        //da gestire TABLE e iLast... che succede alla table dopo stop e start?
+import processing.serial.*;                       
 import controlP5.*; //tipi di controlli https://github.com/sojamo/controlp5   
 import java.util.*;
 
@@ -8,7 +8,7 @@ import java.util.*;
 //https://forum.processing.org/two/discussion/1576/controlp5-basic-example-text-input-field.html
 
 // controlp5 addcallback https://forum.processing.org/one/topic/controlp5-button-using-if-pressed-and-if-released.html
-ScrollableList porteCom;
+//ScrollableList porteCom;
 
 ControlP5 cp5;
 String url1;
@@ -17,7 +17,7 @@ String url1;
 //String nameFile="data/falco2.csv";
 
 Serial myPort;  // Create object from Serial class
-String val;     // Data received from the serial port
+
 
 int xInizio=400;
 int i=xInizio;
@@ -26,6 +26,37 @@ float time = 0;
 float accX = 0;
 float v=0;
 float h=0;
+
+JSONObject json=null;
+
+String nomeVal()
+{
+  String nomeVal="";
+  if (cp5.get(Textfield.class,"textInputVariable1").getText()!="")
+        {
+          nomeVal=cp5.get(Textfield.class,"textInputVariable1").getText();
+        }
+  else
+  {
+    nomeVal="ax";
+  }
+  return nomeVal;
+}
+
+String nomeVal2()
+{
+  String nomeVal="";
+  if (cp5.get(Textfield.class,"textInputVariable2").getText()!="")
+        {
+          nomeVal=cp5.get(Textfield.class,"textInputVariable2").getText();
+        }
+  else
+  {
+    nomeVal="h";
+  }
+  return nomeVal;
+}
+  
 
 int yInizio=400;
 int passoX=2;
@@ -55,14 +86,14 @@ int verde=0; //è stato premuto il bottone campiona
 
 
 
-  
 
 void setup()
 {
   size(1600, 800);
   
   try{
-        myPort = new Serial(this, Serial.list()[1], 115200);  //metto in bottone "Campiona"
+      printArray(Serial.list());
+        myPort = new Serial(this, Serial.list()[0], 115200);  //metto in bottone "Campiona"
         isCom=1;
         //println("trovata COM");
         }
@@ -78,8 +109,8 @@ void setup()
   cp5 = new ControlP5(this);
   cp5.addTextfield("textInput_1").setPosition(10, 20).setSize(200, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   //cp5.addBang("Submit").setPosition(240, 170).setSize(80, 40);         //non dovrebbe servire a nulla questo bottone
-  cp5.addTextfield("textInputVariable1").setPosition(10, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
-  //cp5.addTextfield("textInputVariable2").setPosition(60, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  cp5.addTextfield("textInputVariable1").setPosition(10, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("ax");
+  cp5.addTextfield("textInputVariable2").setPosition(60, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("h");
   //cp5.addTextfield("textInputVariable3").setPosition(110, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
   cp5.addTextfield("textInputVariableMax").setPosition(200, 80).setSize(200, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
@@ -91,36 +122,8 @@ void setup()
   Button b3 = cp5.addButton("Load").setPosition(410,20).setSize(100,50);
   Button b4 = cp5.addButton("Salva").setPosition(610,20).setSize(100,50);
   Button b5 = cp5.addButton("Load Cinematiche").setPosition(510,20).setSize(100,50);
-  //porteCom = cp5.addDropdownList("Porte Com disponibili: ",710,20,200,50); //Deprecated!!!!!!!!!
+ 
   
-  /*
-  List body = Arrays.asList("COM0", "COM1", "Eve", "     Gilly", "Kerbin", "     Mun", "     Minmus", "Duna", "     Ike", "Dres", "Jool", "     Laythe", "     Vall", "     Tylo", "     Bop", "     Pol", "Eeloo");
-
-  porteCom = cp5.addScrollableList("PorteCom")
-        .setPosition(710, 20)
-        .setSize(200, 300)
-        .setBarHeight(30)
-        .setItemHeight(20)
-        .setBackgroundColor(#EA0037)
-        .setColorForeground(#EA0037)
-        .setColorActive(#FF4343)
-        .addItems(body)
-        .setOpen(false);
-  */
-  
-  
-  
-  /*
-  b1.addCallback(new CallbackListener() {
-    public void controlEvent(CallbackEvent theEvent) {
-      switch(theEvent.getAction()) {
-        case(ControlP5.ACTION_PRESSED): cp5.get(Textfield.class,"textInput_1").setText("start"); break;  //ACTION_CLICK
-        case(ControlP5.ACTION_RELEASED): cp5.get(Textfield.class,"textInput_1").setText("stop"); break;
-      }
-    }
-  }
-  );
-  */
   
   b1.addCallback(new CallbackListener() {  //start
     public void controlEvent(CallbackEvent theEvent) {
@@ -129,12 +132,15 @@ void setup()
         
         grafico();
         verde=1;    //premuto start
+        isCom=1;
         i=xInizio;                             //si parte dall'inizio
+        
+        
         table = new Table();                  //tabella nuova ad ogni pressione
         table.addColumn("i",Table.INT);
         table.addColumn("time",Table.FLOAT);
-        table.addColumn("ax",Table.FLOAT);
-        table.addColumn("h",Table.FLOAT);
+        table.addColumn(nomeVal(),Table.FLOAT);    //Arduino spara ax?
+        table.addColumn(nomeVal2(),Table.FLOAT);  //Arduino spara h?
       }
     }
   }
@@ -144,6 +150,7 @@ void setup()
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
         verde=0;
+        isCom=2;  //la table c'è, è come un load
       }
     }
   }
@@ -153,6 +160,7 @@ void setup()
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
           verde=0;
+          isCom=2;  //stato load
           table = new Table();                  //tabella nuova ad ogni pressione
           //table = loadTable(nameFile, "header");  //servirebbe PATH automatico
           //cp5.get(Textfield.class,"textInput_1").getText(); 
@@ -167,7 +175,7 @@ void setup()
                 
                 //int i = row.getInt("i");  //non serve
                 float time = row.getFloat("time");
-                float accX = row.getFloat("ax");
+                float accX = row.getFloat(nomeVal());
                 //float h = row.getFloat("h");  //non serve
                 //println(i + " tempo " + time + " a " + accX);
                 
@@ -207,6 +215,7 @@ void setup()
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
         verde=0;
+        isCom=2;
         //saveTable(table, nameFile);    //il salva deve essere su un altro bottone
         url1 = cp5.get(Textfield.class,"textInput_1").getText();
         saveTable(table,"data/"+url1+".csv");
@@ -220,6 +229,7 @@ void setup()
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
         
           verde=0;
+          isCom=3;  // stato loadCinematiche
           table = new Table();                  //tabella nuova ad ogni pressione
           //table = loadTable(nameFile, "header");  //servirebbe PATH automatico
           //cp5.get(Textfield.class,"textInput_1").getText(); 
@@ -245,8 +255,8 @@ void setup()
                 
                 int i = row.getInt("i");
                 float time = row.getFloat("time");
-                float accX = row.getFloat("ax");
-                float h = row.getFloat("h");
+                float accX = row.getFloat(nomeVal());
+                float h = row.getFloat(nomeVal2());
 
                 if (abs(accX)<0.4)          //elimino rumori
                 {
@@ -314,59 +324,37 @@ void setup()
 
 
 
-JSONObject json=null;
+
 
 void draw()  //questo è un loop come in Arduino, aggiorna solo per "Campiona" in tempo diretto e tiene il buffer "vuoto"
 {
   
 
   try { 
-        if ( isCom==1 && myPort.available() > 0)
+        if ( isCom>0 && myPort.available() > 0)  //questo viene fatto sempre per scaricare il buffer
           { 
+            
+            //json=parseJSONObject(myPort.readStringUntil('\n'));  
+            
+            
             String val2=myPort.readStringUntil('\n');
+            println(val2);
             if (val2!=null)
             {
-              /*
-              val = val2;
-              println(val);
-              */
-
+             
+              json = parseJSONObject(val2);      // read it and store it in json. Va fatto sempre se c'è dato, sennò riempie il buffer!!!
               
-              json = parseJSONObject(val2);
-              if (json == null || json.getFloat("time")==lastTA3) {
-                println("JSONObject could not be parsed or same data");
-              } else {
-                accX = json.getFloat("ax");
-                //accX = json.getFloat(cp5.get(Textfield.class,"textInputVariable").getText());
-                lastTA3=json.getFloat("time");
-                println(accX);
-              }
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-          
-            }          // read it and store it in val. Va fatto sempre se c'è dato, sennò riempie il buffer!!!     
+            }
+            
             
           }
           else{
-          //println("iscom 0 o non dati available");
+            println("iscom 0 o non dati available");
           }
       }
       catch (Exception e)
       {
-        println("myport not available: "+ e);
+        println("no dati o myport not available: "+ e);
       }
 
   /* le cose in tempo diretto/sincrone meglio farle qui al volo. Le cose asincrone le chiamiamo con eventi dai bottoni con i callback!! */

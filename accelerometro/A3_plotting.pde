@@ -1,58 +1,39 @@
-class Ricezione
-{
-  float accXInizio=9.81;
-  void setAccXInizio(float valore)
-  {
-    accXInizio=valore;
-  }
-  float getAccXInizio()
-  {
-    return accXInizio;
-  } 
-   
-   
-  
-  int convalidaAccX(float accX)  //qui devo inserire diversi controlli sul dato
-  {
-    if (abs(accX)<40)  //non ci sono salti oltre 4g, spero
-    {
-      return 1;
-    }
-    else
-    { return 0;}
-  }
-  
-  
-  void setTime()
-  {
-    time=float(split(val , ':' )[0]);
-  }
-  float getTime()
-  {
-    return time;
-  }
-  
-  void setAccX()
-  {
-    String tmpVal = split(val , ':' )[1];
-    accX=float(splitTokens(tmpVal)[0])-getAccXInizio(); //round()
-    
-  }
-  float getAccX()
-  {
-    return accX;
-  }
-  
-  
-  
-}
 
 
 void Campiona()  //riempie in tempo reale i contenitori time, accX e h. Chiamato in loop draw() in A1
 
 {
       
+        
+        
+        
+          try
+          {
+            accX=json.getFloat(nomeVal());
+          }
+          catch (Exception e)
+          {
+            println("errore in json.getFloat(\"ax\")");
+          }
+        
+        
+        
+        
+        
+        try
+        {
+          lastTA3=json.getFloat("time");
+          h=json.getFloat(nomeVal2());
+          
+        }
+        catch (Exception e)
+        {
+          println("errori in json.getFloat(\"time\") o h ");
+        }
+        
       
+    
+  //}  commentato if sopra
       
       if ( lastx>=1550 )    //finito il grafico si reinizia e cancello la tabella
       {
@@ -75,17 +56,24 @@ void Campiona()  //riempie in tempo reale i contenitori time, accX e h. Chiamato
     //println("a "+accX+" h "+h);
     //plotGraficoAx(i,yInizio,accX);
     */
-    accX = json.getFloat("ax");
-    time = json.getFloat("time");
-    h=json.getFloat("h");
+    //accX = json.getFloat("ax");
+    //time = json.getFloat("time");
     
-    if (abs(accX) < 1000)  //dati sporchi, ma quano mai più di 100 m/s^2 in salto
+    time=lastTA3;  //appena letto json.getFloat(time) poco fa
+    
+    
+    
+    if (abs(accX) < 1000)  //dati sporchi, ma quando mai più di 100 m/s^2 in salto
     {
       TableRow newRow = table.addRow();
       newRow.setInt("i",i);
       newRow.setFloat("time", time);
-      newRow.setFloat("ax",accX);    //se premi stop salvi il file
-      newRow.setFloat("h",h);    //se premi stop salvi il file
+      newRow.setFloat(nomeVal(),accX);
+      
+ 
+      
+      
+      newRow.setFloat(nomeVal2(),h);    
       //println(accX+":"+h);
       strokeWeight(2);  // Thicker
       grigio();
