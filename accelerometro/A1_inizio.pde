@@ -66,7 +66,7 @@ String nomeVal2()
   
 
 int yInizio=400;
-int passoX=2;
+int passoX=4;
 int passoY=13;
 int passoYLoad=10;
 int passoV=50;
@@ -120,15 +120,24 @@ void setup()
   cp5.addTextfield("textInputVariable2").setPosition(60, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("h");
   //cp5.addTextfield("textInputVariable3").setPosition(110, 130).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
-  cp5.addTextfield("textInputVariableMax").setPosition(200, 80).setSize(200, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
-  //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
+  
   
   
   //DT
-  cp5.addTextfield("textInputDT").setPosition(120, 10).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("DT: ");;
-  cp5.addTextfield("textInputVariable3").setPosition(120, 60).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  cp5.addTextfield("textInputDT").setPosition(10, 160).setSize(70, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("DT: ");;
+  cp5.addTextfield("textInputVariable3").setPosition(80, 160).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
   //
+  //AxMAX
+  cp5.addTextfield("textInputMaxAx").setPosition(10, 240).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Max Ax: ");;
+  cp5.addTextfield("textInputVariab").setPosition(130, 240).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  
+  //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
+  
+  
+  
+  //
+  
   
   Button b1 = cp5.addButton("Campiona").setPosition(210,20).setSize(100,50); 
   Button b2 = cp5.addButton("Stop").setPosition(310,20).setSize(100,50);

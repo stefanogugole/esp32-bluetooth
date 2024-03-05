@@ -71,7 +71,7 @@ void cercaMax(int xMouseInizio, int xMouseFine)
           }
       }
         //xAttuale=xInizio + int((time-timeInizio)/10);
-        cp5.get(Textfield.class,"textInputVariableMax").setText(""+maxAx);
+        cp5.get(Textfield.class,"textInputVariableMax").setText(""+String.format("%.02f", maxAx));
         nero();
         strokeWeight(16);
         point(int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY));
