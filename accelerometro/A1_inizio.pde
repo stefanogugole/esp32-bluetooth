@@ -130,7 +130,7 @@ void setup()
   //
   //AxMAX
   cp5.addTextfield("textInputMaxAx").setPosition(10, 240).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Max Ax: ");;
-  cp5.addTextfield("textInputVariab").setPosition(130, 240).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  cp5.addTextfield("textInputVariableMax").setPosition(130, 240).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
   //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
   
