@@ -2,6 +2,13 @@ import processing.serial.*;
 import controlP5.*; //tipi di controlli https://github.com/sojamo/controlp5   
 import java.util.*;
 
+/* DA FARE:
+- sistemare cercamax al primo clic etichetta
+- sistemare Dt salto
+- creare le funzioni dirette e inverse per rappresentare su grafico ogni riga tabella
+
+*/
+
 
 //funzionamento accelerometro https://lastminuteengineers.com/mpu6050-accel-gyro-arduino-tutorial/
 
@@ -111,11 +118,17 @@ void setup()
   //cp5.addBang("Submit").setPosition(240, 170).setSize(80, 40);         //non dovrebbe servire a nulla questo bottone
   cp5.addTextfield("textInputVariable1").setPosition(10, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("ax");
   cp5.addTextfield("textInputVariable2").setPosition(60, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("h");
-  //cp5.addTextfield("textInputVariable3").setPosition(110, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  //cp5.addTextfield("textInputVariable3").setPosition(110, 130).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
   cp5.addTextfield("textInputVariableMax").setPosition(200, 80).setSize(200, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
   
+  
+  //DT
+  cp5.addTextfield("textInputDT").setPosition(120, 10).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("DT: ");;
+  cp5.addTextfield("textInputVariable3").setPosition(120, 60).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  
+  //
   
   Button b1 = cp5.addButton("Campiona").setPosition(210,20).setSize(100,50); 
   Button b2 = cp5.addButton("Stop").setPosition(310,20).setSize(100,50);
@@ -159,6 +172,10 @@ void setup()
   b3.addCallback(new CallbackListener() {  //Load    TOGLI "i", non serve
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
+          contatoreClick=0;  //usato in A4 per scrivere il max tra RIGHE ROSSE
+          contatore=0;
+          contatore2=0;
+          cp5.get(Textfield.class,"textInputVariable3").setText("");  //azzero label con Dt RIGHE ROSSE
           verde=0;
           isCom=2;  //stato load
           table = new Table();                  //tabella nuova ad ogni pressione

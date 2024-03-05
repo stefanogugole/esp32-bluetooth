@@ -9,7 +9,7 @@ void Campiona()  //riempie in tempo reale i contenitori time, accX e h. Chiamato
         
           try
           {
-            accX=json.getFloat(nomeVal());
+            accX=json.getFloat(nomeVal())-9.81;    //scalo già 9.81
           }
           catch (Exception e)
           {
@@ -22,7 +22,8 @@ void Campiona()  //riempie in tempo reale i contenitori time, accX e h. Chiamato
         
         try
         {
-          lastTA3=json.getFloat("time");
+          //lastTA3=json.getFloat("time");
+          time=json.getFloat("time");
           h=json.getFloat(nomeVal2());
           
         }
@@ -35,7 +36,7 @@ void Campiona()  //riempie in tempo reale i contenitori time, accX e h. Chiamato
     
   //}  commentato if sopra
       
-      if ( lastx>=1550 )    //finito il grafico si reinizia e cancello la tabella
+      if ( lastx>=1550)    //finito il grafico si reinizia e cancello la tabella
       {
         grafico();  //ri-inizializzo 
         table.clearRows();
@@ -59,11 +60,11 @@ void Campiona()  //riempie in tempo reale i contenitori time, accX e h. Chiamato
     //accX = json.getFloat("ax");
     //time = json.getFloat("time");
     
-    time=lastTA3;  //appena letto json.getFloat(time) poco fa
+    //time=lastTA3;  //appena letto json.getFloat(time) poco fa
     
     
     
-    if (abs(accX) < 1000)  //dati sporchi, ma quando mai più di 100 m/s^2 in salto
+    if (abs(accX) < 1000 && time!=lastTA3 )  //dati sporchi, ma quando mai più di 100 m/s^2 in salto. Elimino i doppioni, non scendo sotto 36milli
     {
       TableRow newRow = table.addRow();
       newRow.setInt("i",i);
@@ -95,6 +96,7 @@ void Campiona()  //riempie in tempo reale i contenitori time, accX e h. Chiamato
       //lastx=i;                      //memorizzo scorso punto in lastx e lasty
       lastx=xAttuale;
       lasty=yAttuale;
+      lastTA3=time;
       
       println("tempo"+int((time-timeInizio)/10));
       grigio();   

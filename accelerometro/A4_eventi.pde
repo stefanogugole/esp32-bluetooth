@@ -14,7 +14,13 @@ int xMouseInizio=0;
 int xMouseFine=0;
 float maxAx=0;
 float maxTime=0;
+float tInizio=0;  //prima riga rossa
+float tFine=0;
 
+int contatore=0;  //misuro se è la prima riga dell'intervallo righe rosse verticali
+int contatore2=0;  //misuro se sono uscito dall'intervallo righe rosse verticali
+      
+      
 void aggiungiClick()
 {
   contatoreClick=(contatoreClick+1)%2;    //resto divisione: 0 scelto inizio, 1 scelto fine.
@@ -24,19 +30,45 @@ void cercaMax(int xMouseInizio, int xMouseFine)
 {
   try
   {
-      int i=0;
+   
+      
       for (TableRow row : table.rows()) 
       {
-        i=i+1;
+      
+        
+        
         float time=xInizio + int((row.getFloat("time")-timeInizio)/10);
+        
+        
+        
+        
+        
+        
         if (time>xMouseInizio && time<xMouseFine)
         {
-          if (row.getFloat(nomeVal())>maxAx)
+          contatore=contatore+1;
+          if (contatore==1)
           {
-            maxAx=row.getFloat(nomeVal());
-            maxTime=row.getFloat("time");
+            tInizio=row.getFloat("time");
           }
+          
+          
+            
+            if (row.getFloat(nomeVal())>maxAx)
+            {
+              maxAx=row.getFloat(nomeVal());
+              maxTime=row.getFloat("time");
+            }
+          
         }
+        if (contatore>0){
+          contatore2=contatore2+1;
+        }
+        if (contatore>0 && contatore2==contatore+1)  //scrivo solo la prima volta, sennò continua
+          {
+            tFine=row.getFloat("time");
+            cp5.get(Textfield.class,"textInputVariable3").setText(""+(tFine-tInizio)/1000);  //azzerata in Load A1
+          }
       }
         //xAttuale=xInizio + int((time-timeInizio)/10);
         cp5.get(Textfield.class,"textInputVariableMax").setText(""+maxAx);
@@ -50,7 +82,7 @@ void cercaMax(int xMouseInizio, int xMouseFine)
         
     
       
-        i=i+passoX;
+     
       
   }
    catch (Exception e)
@@ -90,7 +122,7 @@ void mousePressed()
      }
       if (mouseButton == RIGHT)
      {    
-          aggiungiClick();
+          aggiungiClick();  //con Load devo azzerare click
           if (mouseX>=xInizio && isCom==2)  //isCom 2 è load e stop mode
             {
                   //fill(0,0,0);
@@ -98,6 +130,11 @@ void mousePressed()
               if(contatoreClick==1)    //ho già cliccato sopra, è diventato 1
               {
                 xMouseInizio=mouseX;
+                
+                
+                
+                
+                
                         cp5.get(Textfield.class,"textInputVariableMax").setText("");
 
                 
@@ -113,6 +150,8 @@ void mousePressed()
                   xMouseFine=0;
                   maxAx=0;    //resetto i max
                   maxTime=0;
+                  contatore=0;
+                  contatore2=0;
                   
                   //cp5.get(Textfield.class,"textInputVariableMax").setText(""+xMouseFine);
                 }
