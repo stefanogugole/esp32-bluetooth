@@ -100,8 +100,11 @@ void setup()
   
   try{
       printArray(Serial.list());
+
         myPort = new Serial(this, Serial.list()[0], 115200);  //metto in bottone "Campiona"
+
         isCom=1;
+
         //println("trovata COM");
         }
         catch (Exception e)

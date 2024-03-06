@@ -9,7 +9,7 @@ void Campiona()  //riempie in tempo reale i contenitori time, accX e h. Chiamato
         
           try
           {
-            accX=json.getFloat(nomeVal())-9.81;    //scalo già 9.81
+            accX=-json.getFloat(nomeVal())-9.81;    //scalo già 9.81
           }
           catch (Exception e)
           {
