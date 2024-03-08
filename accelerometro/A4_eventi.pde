@@ -49,7 +49,7 @@ void cercaMax(int xMouseInizio, int xMouseFine)
           contatore=contatore+1;
           if (contatore==1)
           {
-            tInizio=row.getFloat("time");
+            tInizio=row.getFloat("time");    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1qui sarebbe da porre a zero anche v e s iniziali
           }
           
           
@@ -74,11 +74,27 @@ void cercaMax(int xMouseInizio, int xMouseFine)
         cp5.get(Textfield.class,"textInputVariableMax").setText(""+String.format("%.02f", maxAx));
         nero();
         strokeWeight(16);
-        point(int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY));
+        if (isCom==2)  //finestra Load o cmq Stop
+        {
+          point(int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY));
+        }
+        if (isCom==3)
+        {
+          point(xInizio+int((maxTime-timeInizio)/10),int(yInizioCine-maxAx*passoYLoad));
+        }
+        
         strokeWeight(4);
         fill(0,0,0);
         textSize(40);
-        text("Max Ax: "+maxAx,int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY)-20);
+        if (isCom==2)
+        {
+          text("Max Ax: "+maxAx,int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY)-20);
+        }
+        if (isCom==3)
+        {
+          text("Max Ax: "+maxAx,int(xInizio + int((maxTime-timeInizio)/10)),int(yInizioCine-maxAx*passoYLoad)-10);
+        }
+        
         
     
       
@@ -123,7 +139,7 @@ void mousePressed()
       if (mouseButton == RIGHT)
      {    
           aggiungiClick();  //con Load devo azzerare click
-          if (mouseX>=xInizio && isCom==2)  //isCom 2 è load e stop mode
+          if (mouseX>=xInizio && (isCom==2 || isCom==3))  //isCom 2 è load e stop mode o isCom 3 cinematiche
             {
                   //fill(0,0,0);
                   

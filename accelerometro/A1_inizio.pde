@@ -66,6 +66,7 @@ String nomeVal2()
   
 
 int yInizio=400;
+int yInizioCine=250;
 int passoX=4;
 int passoY=13;
 int passoYLoad=10;
@@ -181,13 +182,17 @@ void setup()
   }
   );
   
-  b3.addCallback(new CallbackListener() {  //Load    TOGLI "i", non serve
+  b3.addCallback(new CallbackListener() {  //Load    TOGLI "i" da table e files, non serve
     public void controlEvent(CallbackEvent theEvent) {
       if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
+          
           contatoreClick=0;  //usato in A4 per scrivere il max tra RIGHE ROSSE
           contatore=0;
           contatore2=0;
+          
           cp5.get(Textfield.class,"textInputVariable3").setText("");  //azzero label con Dt RIGHE ROSSE
+          cp5.get(Textfield.class,"textInputVariableMax").setText("");  //azzero label con MaxAx RIGHE ROSSE
+
           verde=0;
           isCom=2;  //stato load
           table = new Table();                  //tabella nuova ad ogni pressione
@@ -255,7 +260,81 @@ void setup()
   
   b5.addCallback(new CallbackListener() {  //LoadCinematiche  
     public void controlEvent(CallbackEvent theEvent) {
-      if (theEvent.getAction()==ControlP5.ACTION_CLICK) {
+      if (theEvent.getAction()==ControlP5.ACTION_CLICK) 
+        {
+          
+          contatoreClick=0;  //usato in A4 per scrivere il max tra RIGHE ROSSE
+          contatore=0;
+          contatore2=0;
+          
+          cp5.get(Textfield.class,"textInputVariable3").setText("");  //azzero label con Dt RIGHE ROSSE
+          cp5.get(Textfield.class,"textInputVariableMax").setText("");  //azzero label con MaxAx RIGHE ROSSE
+
+          verde=0;
+          isCom=3;  //stato loadCinematiche
+          table = new Table();                  //tabella nuova ad ogni pressione
+          //table = loadTable(nameFile, "header");  //servirebbe PATH automatico
+          //cp5.get(Textfield.class,"textInput_1").getText(); 
+          url1 = cp5.get(Textfield.class,"textInput_1").getText();
+          try
+          {
+              table = loadTable("data/"+url1+".csv", "header");
+              graficoCinematiche();
+              i=xInizio;
+              for (TableRow row : table.rows()) 
+              {
+                
+                //int i = row.getInt("i");  //non serve
+                float time = row.getFloat("time");
+                float accX = row.getFloat(nomeVal());
+                if (abs(accX)<0.4)          //elimino rumori
+                {
+                  accX=0;
+                }
+                
+                //float h = row.getFloat("h");  //non serve
+                //println(i + " tempo " + time + " a " + accX);
+                
+                
+                if (i==xInizio)  //setto Dt iniziale per le "x" del grafico
+                {
+                  timeInizio=time;
+                  lastx=xInizio;
+                  lasty=yInizioCine;    
+                }
+                //se non è il primo loop, allora setto dopo lastx e last y
+                
+                strokeWeight(2);  // Thicker
+                stroke(0);
+                //line(i,yInizio, i, yInizio-accX*passoY); //istogramma
+                
+                
+                
+                int xAttuale=xInizio + int((time-timeInizio)/10);              //e se x troppo in là?
+                line(xAttuale,yInizioCine, xAttuale, int(yInizioCine-accX*passoYLoad)); //istogramma
+                blu();
+                line(lastx,lasty,xAttuale,int(yInizioCine-accX*passoYLoad));
+                //lastx=i;                      //memorizzo scorso punto in lastx e lasty
+                lastx=xAttuale;
+                lasty=int(yInizioCine-accX*passoYLoad);
+                
+                
+                
+                grigio();   
+                i=i+passoX;
+              }   
+          }
+           catch (Exception e)
+             {
+             }
+             
+      }
+      
+      
+      
+      
+      
+      /*{
         
           verde=0;
           isCom=3;  // stato loadCinematiche
@@ -328,7 +407,7 @@ void setup()
              {
                println("Errore in loadcinematiche : "+e);
              }
-      }
+      }*/
     }
   }
   );
