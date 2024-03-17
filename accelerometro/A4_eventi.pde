@@ -17,7 +17,13 @@ float maxAx=0;
 float maxTime=0;
 float maxV=0;
 float maxH=0;
+float maxTimeH=0;
 float maxTimeV=0;
+float maxTimeHsens=0;
+float minTimeHsens=0;
+float maxHsens=0;
+float minHsens=0;
+float maxHsensDT=0;
 
 float tInizio=0;  //prima riga rossa
 float tFine=0;
@@ -37,6 +43,12 @@ void cercaMax(int xMouseInizio, int xMouseFine)
   {
        //println("entrato in cercaMax");  
       //contorno iniziale
+              maxHsensDT=0;
+              minHsens=0;
+              maxHsens=0;
+              maxAx=0;
+              maxV=0;
+              maxH=0;
               timeInizio=table.getRow(0).getFloat("time");
               float timeInizioIntervallo=timeInizio;  //lo uso solo per righe rosse cercamax
               lastV=0;
@@ -68,6 +80,8 @@ void cercaMax(int xMouseInizio, int xMouseFine)
         
         if (contatore==1)  //ha a che fare con le righe rosse e cercamax in A4
           {
+            minHsens=row.getFloat("h");
+            maxHsens=row.getFloat("h");
             //println("entrato contatore 1:"+contatore);
             timeInizioIntervallo=row.getFloat("time");  //non serve probabilmente
             lastT=timeInizioIntervallo;
@@ -116,11 +130,30 @@ void cercaMax(int xMouseInizio, int xMouseFine)
                  
                 grigio();   
                 
+                
+                
+                if(h>maxH)
+                {
+                  maxH=h;
+                  maxTimeH=time;
+                }
+                
                 if (v>maxV)
                 {
                   maxV=v;
                   maxTimeV=time;
                   
+                }
+                
+                if (row.getFloat("h")>maxHsens)
+                {
+                  maxHsens=row.getFloat("h");
+                  maxTimeHsens=time;
+                }
+                if (row.getFloat("h")<minHsens)
+                {
+                  minHsens=row.getFloat("h");
+                  minTimeHsens=time;
                 }
           
           
@@ -141,8 +174,8 @@ void cercaMax(int xMouseInizio, int xMouseFine)
         if (contatore>0 && contatore2==contatore+1)  //scrivo solo la prima volta, sennò continua
           {
             tFine=row.getFloat("time");
-            cp5.get(Textfield.class,"textInputVariable3").setText(""+(tFine-timeInizio)/1000);  //azzerata in Load A1
-            println("MAx velocità è: "+maxV+" al tempo "+maxTimeV);
+            cp5.get(Textfield.class,"textInputVariable3").setText(""+(tFine-timeInizioIntervallo)/1000);  //azzerata in Load A1
+            
           }
           
           
@@ -150,11 +183,11 @@ void cercaMax(int xMouseInizio, int xMouseFine)
       }      //fine for table
       
       
-       
-        //xAttuale=xInizio + int((time-timeInizio)/10);
         cp5.get(Textfield.class,"textInputVariableMax").setText(""+String.format("%.02f", maxAx));
-        
-        
+        cp5.get(Textfield.class,"textInputVariableMaxV").setText(""+String.format("%.02f",maxV));
+        cp5.get(Textfield.class,"textInputVariableMaxH").setText(""+String.format("%.02f",maxH));
+        cp5.get(Textfield.class,"textInputSensMaxH").setText(""+String.format("%.02f",maxHsens-minHsens));
+        cp5.get(Textfield.class,"textInputSensMaxHDT").setText(""+String.format("%.03f",(maxTimeHsens-minTimeHsens)*2/1000));
 
         
         nero();
@@ -168,6 +201,8 @@ void cercaMax(int xMouseInizio, int xMouseFine)
         if (isCom==3)
         {
           point(xInizio+int((maxTime-timeInizio)/10),int(yInizioCine-maxAx*passoYLoad));
+          point(xInizio+int((maxTimeV-timeInizio)/10),500-round(maxV*passoV));
+          point(xInizio+int((maxTimeH-timeInizio)/10),750-round(maxH*passoH));
         }
         
         strokeWeight(4);
@@ -180,6 +215,8 @@ void cercaMax(int xMouseInizio, int xMouseFine)
         if (isCom==3)
         {
           text("Max Ax: "+maxAx,int(xInizio + int((maxTime-timeInizio)/10)),int(yInizioCine-maxAx*passoYLoad)-10);
+          text("Vmax: "+maxV,xInizio+int((maxTimeV-timeInizio)/10),500-round(maxV*passoV)-10);
+          text("Hmax: "+maxH,xInizio+int((maxTimeH-timeInizio)/10),750-round(maxH*passoH)-10);
         }
         
         
@@ -239,6 +276,13 @@ void mousePressed()
                 
                 
                         cp5.get(Textfield.class,"textInputVariableMax").setText("");
+                        cp5.get(Textfield.class,"textInputVariableMaxV").setText("");
+                        cp5.get(Textfield.class,"textInputVariableMaxH").setText("");
+                        cp5.get(Textfield.class,"textInputSensMaxH").setText("");
+                        cp5.get(Textfield.class,"textInputSensMaxHDT").setText("");
+                        maxAx=0;
+                        maxV=0;
+                        maxH=0;
 
                 
                 //cp5.get(Textfield.class,"textInputVariableMax").setText(""+xMouseInizio);

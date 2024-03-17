@@ -139,9 +139,23 @@ void setup()
   
   //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
   
-  //AxMAX
-  cp5.addTextfield("textInputMaxV").setPosition(10, 240).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Max V: ");;
-  cp5.addTextfield("textInputVariableMaxV").setPosition(130, 240).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  //VMAX
+  cp5.addTextfield("textInputMaxV").setPosition(10, 320).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Max V: ");;
+  cp5.addTextfield("textInputVariableMaxV").setPosition(130, 320).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  
+  
+  //HMAx
+  cp5.addTextfield("textInputMaxH").setPosition(10, 400).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Max H: ");;
+  cp5.addTextfield("textInputVariableMaxH").setPosition(130, 400).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  
+  //SensHMAx
+  cp5.addTextfield("textInputMaxHsens").setPosition(10, 480).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Sens H: ");
+  cp5.addTextfield("textInputSensMaxH").setPosition(130, 480).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  cp5.addTextfield("textInputMaxHsensDT").setPosition(10, 560).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("S_H_DT*2: ");
+  cp5.addTextfield("textInputSensMaxHDT").setPosition(130, 560).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  
+  
+  
   
   //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
   
@@ -197,6 +211,11 @@ void setup()
           
           cp5.get(Textfield.class,"textInputVariable3").setText("");  //azzero label con Dt RIGHE ROSSE
           cp5.get(Textfield.class,"textInputVariableMax").setText("");  //azzero label con MaxAx RIGHE ROSSE
+          cp5.get(Textfield.class,"textInputVariableMaxV").setText("");  //azzero label con MaxAv RIGHE ROSSE
+          cp5.get(Textfield.class,"textInputVariableMaxH").setText("");  //azzero label con MaxAx RIGHE ROSSE
+          cp5.get(Textfield.class,"textInputSensMaxH").setText("");  //azzero label con MaxH RIGHE ROSSE
+          cp5.get(Textfield.class,"textInputSensMaxHDT").setText("");  //azzero label con MaxH RIGHE ROSSE
+
 
           verde=0;
           isCom=2;  //stato load
@@ -274,6 +293,10 @@ void setup()
           
           cp5.get(Textfield.class,"textInputVariable3").setText("");  //azzero label con Dt RIGHE ROSSE
           cp5.get(Textfield.class,"textInputVariableMax").setText("");  //azzero label con MaxAx RIGHE ROSSE
+          cp5.get(Textfield.class,"textInputVariableMaxV").setText("");  //azzero label con MaxV RIGHE ROSSE
+          cp5.get(Textfield.class,"textInputVariableMaxH").setText("");  //azzero label con MaxH RIGHE ROSSE
+          cp5.get(Textfield.class,"textInputSensMaxH").setText("");  //azzero label con MaxH RIGHE ROSSE
+           cp5.get(Textfield.class,"textInputSensMaxHDT").setText("");  //azzero label con MaxH RIGHE ROSSE
 
           verde=0;
           isCom=3;  //stato loadCinematiche
