@@ -118,9 +118,9 @@ void setup()
   
   
   cp5 = new ControlP5(this);
-  cp5.addTextfield("textInput_1").setPosition(10, 20).setSize(200, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  cp5.addTextfield("textInput_1").setPosition(10, 20).setSize(200, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Gugole");
   //cp5.addBang("Submit").setPosition(240, 170).setSize(80, 40);         //non dovrebbe servire a nulla questo bottone
-  cp5.addTextfield("textInputVariable1").setPosition(10, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("ax");
+  cp5.addTextfield("textInputVariable1").setPosition(10, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("ay");
   cp5.addTextfield("textInputVariable2").setPosition(60, 80).setSize(50, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("h");
   //cp5.addTextfield("textInputVariable3").setPosition(110, 130).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
@@ -306,9 +306,9 @@ void setup()
                 
                 strokeWeight(2);  // Thicker
                 stroke(0);
-                //line(i,yInizio, i, yInizio-accX*passoY); //istogramma
                 
                 
+                //plot acc
                 
                 int xAttuale=xInizio + int((time-timeInizio)/10);              //e se x troppo in là?
                 line(xAttuale,yInizioCine, xAttuale, int(yInizioCine-accX*passoYLoad)); //istogramma
@@ -317,7 +317,7 @@ void setup()
                 //lastx=i;                      //memorizzo scorso punto in lastx e lasty
                 lastx=xAttuale;
                 lasty=int(yInizioCine-accX*passoYLoad);
-                
+                //!
                 
                 
                 grigio();   
@@ -457,12 +457,12 @@ void draw()  //questo è un loop come in Arduino, aggiorna solo per "Campiona" i
             
           }
           else{
-            println("iscom 0 o non dati available");
+            //println("iscom 0 o non dati available");
           }
       }
       catch (Exception e)
       {
-        println("no dati o myport not available: "+ e);
+        //println("no dati o myport not available: "+ e);
       }
 
   /* le cose in tempo diretto/sincrone meglio farle qui al volo. Le cose asincrone le chiamiamo con eventi dai bottoni con i callback!! */

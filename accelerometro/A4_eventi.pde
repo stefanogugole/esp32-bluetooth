@@ -12,8 +12,13 @@
 int contatoreClick=0;
 int xMouseInizio=0;
 int xMouseFine=0;
+
 float maxAx=0;
 float maxTime=0;
+float maxV=0;
+float maxH=0;
+float maxTimeV=0;
+
 float tInizio=0;  //prima riga rossa
 float tFine=0;
 
@@ -30,31 +35,100 @@ void cercaMax(int xMouseInizio, int xMouseFine)
 {
   try
   {
-   
+       //println("entrato in cercaMax");  
+      //contorno iniziale
+              timeInizio=table.getRow(0).getFloat("time");
+              float timeInizioIntervallo=timeInizio;  //lo uso solo per righe rosse cercamax
+              lastV=0;
+              lastx=xInizio;
+              lasty=yInizio;
+              lastH=0;
+              lastT=timeInizio;
+              
+              //fine contorno  
+      
+      float time=timeInizio;
+      float accX=0;
+      float timeX=xInizio;
       
       for (TableRow row : table.rows()) 
       {
-      
-        
-        
-        float time=xInizio + int((row.getFloat("time")-timeInizio)/10);
+          //println("contatore: "+contatore);
         
         
         
+        time=row.getFloat("time");  
+        accX = row.getFloat(nomeVal());
+        timeX=xInizio + int((time-timeInizio)/10);  //dove sono su asse x, serve timeinizio
         
-        
-        
-        if (time>xMouseInizio && time<xMouseFine)
+        if (timeX>xMouseInizio && timeX<xMouseFine)
         {
           contatore=contatore+1;
-          if (contatore==1)
+        }
+        
+        if (contatore==1)  //ha a che fare con le righe rosse e cercamax in A4
           {
-            tInizio=row.getFloat("time");    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1qui sarebbe da porre a zero anche v e s iniziali
+            //println("entrato contatore 1:"+contatore);
+            timeInizioIntervallo=row.getFloat("time");  //non serve probabilmente
+            lastT=timeInizioIntervallo;
+            lastx=timeX;   
+            //lasty=500;  //??? 500 è v, 250 è a, 750 è h//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+ 
+            
           }
           
+        
+        
+        println("Contatore: "+contatore+" timeX: "+timeX+" mouseinizio "+xMouseInizio+" mousefine "+xMouseFine);
+        if (timeX>xMouseInizio && timeX<xMouseFine)
+        {
           
+          //plot v e h
+          
+          if (isCom==3)
+          {
+                println("isCom=3, tempo " + time + " a " + accX);
+                
+                strokeWeight(2);  // Thicker
+                stroke(0);
+                v=lastV+accX*(time-lastT)/1000;
+                h=lastH+lastV*(time-lastT)/1000+0.5*round(accX)*(time-lastT)/1000*(time-lastT)/1000;
+                println("velocità "+v+" dt "+(time-lastT));
+                //line(i,250, i, int(250-accX*passoYLoad)); //istogramma
+                line(timeX,500,timeX,500 - round(v*passoV));  //qui il time serve in pixel
+                line(timeX,750,timeX,750-round(h*passoH));
+                
+                blu();
+                //line(lastx,lasty,i,int(250-accX*passoYLoad));
+                
+                
+                
+                line(lastx,500-round(lastV*passoV),timeX,500-round(v*passoV));
+                line(lastx,750-round(passoH*lastH),timeX,750-round(h*passoH));
+                
+                lastx=timeX;                      //memorizzo scorso punto in lastx e lasty
+                //lastT=time;  //assegnazione che fa sempre e comunque a fine for 
+                //lasty=int(250-accX*passoYLoad);
+                lastV=v;
+                lastH=h;
+                println("velocità v"+v);
+                 
+                grigio();   
+                
+                if (v>maxV)
+                {
+                  maxV=v;
+                  maxTimeV=time;
+                  
+                }
+          
+          
+          }
+          // fine plot v e h
+
             
-            if (row.getFloat(nomeVal())>maxAx)
+          if (row.getFloat(nomeVal())>maxAx)
             {
               maxAx=row.getFloat(nomeVal());
               maxTime=row.getFloat("time");
@@ -67,16 +141,29 @@ void cercaMax(int xMouseInizio, int xMouseFine)
         if (contatore>0 && contatore2==contatore+1)  //scrivo solo la prima volta, sennò continua
           {
             tFine=row.getFloat("time");
-            cp5.get(Textfield.class,"textInputVariable3").setText(""+(tFine-tInizio)/1000);  //azzerata in Load A1
+            cp5.get(Textfield.class,"textInputVariable3").setText(""+(tFine-timeInizio)/1000);  //azzerata in Load A1
+            println("MAx velocità è: "+maxV+" al tempo "+maxTimeV);
           }
-      }
+          
+          
+          lastT=time;
+      }      //fine for table
+      
+      
+       
         //xAttuale=xInizio + int((time-timeInizio)/10);
         cp5.get(Textfield.class,"textInputVariableMax").setText(""+String.format("%.02f", maxAx));
+        
+        
+
+        
         nero();
         strokeWeight(16);
+        
+        
         if (isCom==2)  //finestra Load o cmq Stop
         {
-          point(int(xInizio + int((maxTime-timeInizio)/10)),int(yInizio-maxAx*passoY));
+          point(xInizio + int((maxTime-timeInizio)/10),int(yInizio-maxAx*passoY));  //non serve timeInizio, è già scalato
         }
         if (isCom==3)
         {
