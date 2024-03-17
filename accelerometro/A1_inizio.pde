@@ -1,3 +1,4 @@
+
 import processing.serial.*;                       
 import controlP5.*; //tipi di controlli https://github.com/sojamo/controlp5   
 import java.util.*;
@@ -133,12 +134,16 @@ void setup()
   
   //
   //AxMAX
-  cp5.addTextfield("textInputMaxAx").setPosition(10, 240).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Max Ax: ");;
+  cp5.addTextfield("textInputMaxAx").setPosition(10, 240).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Max A: ");;
   cp5.addTextfield("textInputVariableMax").setPosition(130, 240).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
   //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
   
+  //AxMAX
+  cp5.addTextfield("textInputMaxV").setPosition(10, 240).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Max V: ");;
+  cp5.addTextfield("textInputVariableMaxV").setPosition(130, 240).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
+  //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
   
   //
   
