@@ -68,7 +68,7 @@ void setup(void) {
   pinMode(trigPin,OUTPUT);// set trigPin to output mode
   pinMode(echoPin,INPUT); // set echoPin to input mode
   Wire.begin(I2C_SDA, I2C_SCL); // remap I2C
-  ESP_BT.begin("ESP32_BLE_TX_Prof"); //Name of your Bluetooth Signal
+  ESP_BT.begin("ESP32_BLE_TX_Prof_1"); //Name of your Bluetooth Signal
   //Serial.println("Bluetooth Device is Ready to Pair");
 
   

@@ -103,8 +103,8 @@ void setup()
   try{
       printArray(Serial.list());
 
-        myPort = new Serial(this, Serial.list()[0], 115200);  //metto in bottone "Campiona"
-
+        myPort = new Serial(this, Serial.list()[5], 115200);  //metto in bottone "Campiona"
+      println(Serial.list()[0]);    //il due è quello con cavo rosso blu e usa [1], l'1 è quello con cavo rosso marrone e usa [5]   
         isCom=1;
 
         //println("trovata COM");
@@ -130,12 +130,12 @@ void setup()
   
   //DT
   cp5.addTextfield("textInputDT").setPosition(10, 160).setSize(70, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("DT: ");;
-  cp5.addTextfield("textInputVariable3").setPosition(80, 160).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  cp5.addTextfield("textInputVariable3").setPosition(80, 160).setSize(90, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
   //
   //AxMAX
   cp5.addTextfield("textInputMaxAx").setPosition(10, 240).setSize(120, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000).setText("Max A: ");;
-  cp5.addTextfield("textInputVariableMax").setPosition(130, 240).setSize(100, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
+  cp5.addTextfield("textInputVariableMax").setPosition(130, 240).setSize(90, 50).setAutoClear(false).setColorBackground(0xffffffff).setFont(createFont("arial", 30)).setColor(0xff000000);
   
   //doce c'è ax o accX dobbiamo mettere il textInputVariable o default se vuoto!
   
